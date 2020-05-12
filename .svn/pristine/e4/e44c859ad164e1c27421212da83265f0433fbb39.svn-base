@@ -1,0 +1,89 @@
+import { asyncImport } from './routerLoadable';
+import '../styles/iconfont/iconfont.css'
+
+const routesConfig = [
+  
+ 
+  {
+    name: '通行记录',
+    path: '/app',
+    key: 'app',
+    component: asyncImport(() => import('../containers/Current')),
+    meta: {
+      title: '通行记录'
+    },
+    icon: 'anticon-tonghangjilu'
+  },
+  {
+    name: '考生管理',
+    path: '/Examinee',
+    key: 'Examinee',
+    component: asyncImport(() => import('../containers/Examinee')),
+    meta: {
+      title: '考生管理'
+    },
+    icon:'anticon-kaoshengguanli'
+  },
+  {
+    name: '考点列表',
+    path: '/ExamPoint',
+    key: 'ExamPoint',
+    component: asyncImport(() => import('../containers/ExamPoint')),
+    meta: {
+      title: '考点列表'
+    },
+    icon: 'anticon-kaodian'
+  },
+  {
+    name: '考室列表',
+    path: '/ExamRoom',
+    key: 'ExamRoom',
+    component: asyncImport(() => import('../containers/ExamRoom')),
+    meta: {
+      title: '考室列表'
+    },
+    icon: 'anticon-kaoshi'
+  },
+  {
+    name: '考场列表',
+    path: '/ExamNumber',
+    key: 'ExamNumber',
+    component: asyncImport(() => import('../containers/ExamNumber')),
+    meta: {
+      title: '考场列表'
+    },
+    icon: 'anticon-kaochang'
+  },
+  {
+    name: '核查建库',
+    path: '/VerificationDatabase',
+    key: 'VerificationDatabase',
+    component: asyncImport(() => import('../containers/VerificationDatabase')),
+    meta: {
+      title: '核查建库'
+    },
+    icon: 'anticon-hechajianku'
+  },
+  {
+    name: '考生核验',
+    path: '/ExamineeCheck',
+    key: 'ExamineeCheck',
+    component: asyncImport(() => import('../containers/ExamineeCheck')),
+    meta: {
+      title: '核查建库'
+    },
+    icon: 'anticon-kaoshengheyan'
+  },
+  {
+    name: '设备配置',
+    path: '/Setting',
+    key: 'Setting',
+    component: asyncImport(() => import('../containers/Setting')),
+    meta: {
+      title: '设备配置'
+    },
+    icon: 'anticon-shebeiguanli1'
+  },
+];
+
+export default routesConfig;

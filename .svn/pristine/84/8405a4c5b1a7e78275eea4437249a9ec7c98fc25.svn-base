@@ -1,0 +1,52 @@
+.examPoint-page{
+    &-header{
+        &-text{
+            font-size: 18px;
+        }
+        Button{
+          float:right;
+        }
+    }
+    &-content{
+      box-shadow: 0 5px 8px 0 #DAE1E5;
+      margin-top: 15px;
+      padding:0 5px;
+            .ant-table-tbody {
+                text-align: center;
+              }     
+              .ant-table-thead > tr > th {
+                text-align: center;
+                border: none;
+                background: rgba(243, 247, 255, 1);
+              }       
+              .ant-table-tbody > tr > td {
+                border: none;
+              }    
+              .ant-table-tbody > tr:nth-child(even) {
+                background: rgba(243, 247, 255, 1);
+              }
+            &-txt{
+              color:#3A9CFF;
+              cursor:pointer;
+            }
+            &-f{
+              margin:0 3px;
+            }
+        }   
+    &-footer{
+      &-addmodal{
+        .ant-modal-header{
+          border-bottom: 1px solid #3A9CFF;
+        }
+        .ant-modal-close{
+          color:#fff;
+          background:#67B8FA;         
+        }
+        .ant-modal-close-x{
+          font-size: 36px;
+        }
+      }
+    }
+  }
+
+

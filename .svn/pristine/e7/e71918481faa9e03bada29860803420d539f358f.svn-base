@@ -1,0 +1,12 @@
+
+.logout{
+  margin-left: 56px;
+  margin-right: 48px;
+  font-size: 16px;
+  color: #000;
+  cursor: pointer;
+  > i{
+    margin-right: 26px;
+    color: #000;
+  }
+}

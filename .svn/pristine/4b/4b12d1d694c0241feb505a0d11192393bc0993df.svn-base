@@ -1,0 +1,46 @@
+.loginWrap {
+  display: inline-block;
+  background: transparent no-repeat no-repeat;
+  display: flex;
+  justify-items: center;
+  justify-content: center;
+  background:url('../../images/login-bg-new.png') no-repeat center;
+}
+
+.bg {
+  position: relative;
+}
+
+.fromWrap {
+  position: absolute;
+  width: 446px;
+  height: 315px;
+  border-radius: 10px;
+  // float: right;
+  // top: 330px;
+  // left: 1105px;
+  top:35%;
+  // left:60%;
+  right:120px;
+  background-color:#fff;
+  box-shadow: 0px 3px 3px 1px #dbdfe7;
+}
+
+.login-form{
+  padding: 40px;
+}
+
+.username{
+  padding-top: 20px;
+}
+
+.password{
+
+}
+.login-form-button{
+  margin-bottom: 30px;
+}
+
+.login-form-forgot{
+  float: right;
+}

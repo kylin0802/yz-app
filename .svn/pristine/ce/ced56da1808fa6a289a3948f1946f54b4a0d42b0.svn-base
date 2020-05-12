@@ -1,0 +1,23 @@
+
+.yz-dialog{
+  .ant-modal-header{
+    border-bottom-color: #3A9CFF;
+  }
+  .ant-modal-close-x{
+    background-color: #67B8FA;
+    color: #ffffff;
+    position: relative;
+    > i{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform:translate(-50%,-50%);
+    }
+    svg{
+      font-size: 36px;
+    }
+  }
+  .ant-modal-footer{
+    text-align: center;
+  }
+}

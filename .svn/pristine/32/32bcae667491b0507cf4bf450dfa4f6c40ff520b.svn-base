@@ -1,0 +1,31 @@
+.examinee-page-editor-examinee {
+ 
+  &-label {
+    display: inline-block;
+    margin-right: 36px;
+    margin-bottom: 20px;
+   
+    >label {
+      margin-right: 7px;
+      color: #69758C;
+      display: block;
+    }
+    
+    &-span{
+      display: inline-block;
+    }
+    &-span {
+      display: inline-block;
+      width: 140px;
+      margin-left: 10px;
+    }
+  }
+  &-list{
+    display: inline-block;
+  }
+  .avatar-uploader > .ant-upload {
+    width: 137px;
+    height: 186px;
+  }
+}
+

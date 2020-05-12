@@ -1,0 +1,16 @@
+.current-page{
+    &-list{
+        &-button{
+            margin-top: 10px;
+            margin-bottom:5px;
+            float:right;
+        }
+        &-content{
+            //  box-shadow: 0px 3px 5px 3px #dbdfe7;
+            &-pagination{
+                margin-top:10px;
+                float:right;
+            }
+        }
+    }
+}

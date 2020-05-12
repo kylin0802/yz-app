@@ -1,0 +1,5 @@
+export const EXAMINEE_CHECK_LIST_API ='/yzSmartGate/manage/examVerification/query' // 列表
+export const EXAMINEE_CHECK_ACTION_API = '/yzSmartGate/manage/examVerification/verify' //校验
+export const EXAM_SITE_API = '/yzSmartGate/manage/examSite/loadExamSiteList' // 获取下拉
+export const EXAM_NUMBER_API = '/yzSmartGate/manage/examSite/loadExamNumberList' // 获取下拉
+

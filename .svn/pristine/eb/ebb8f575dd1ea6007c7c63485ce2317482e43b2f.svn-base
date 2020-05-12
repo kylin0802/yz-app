@@ -1,0 +1,88 @@
+/* reset css */
+body,
+ul,
+ol,
+p,
+dl,
+dd,
+form,
+textarea,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+fieldset,
+input {
+  margin: 0;
+}
+
+ul,
+ol,
+input,
+button,
+td,
+th,
+fieldset {
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style-type: none;
+  list-style-position: outside;
+}
+
+a {
+  text-decoration: none;
+  &:focus {
+    text-decoration: none;
+  }
+}
+
+a img,
+fieldset {
+  border: none 0;
+}
+
+fieldset {
+  legend {
+    display: none;
+  }
+}
+
+a,
+input,
+button,
+textarea {
+  outline: none;
+}
+
+em,
+i {
+  font-style: normal;
+}
+
+textarea {
+  resize: none;
+}
+
+pre {
+  display: inline;
+  white-space: normal;
+}
+
+input,
+textarea {
+  font-family: PingFang SC, Helvetica Neue, Helvetica, Arial, Hiragino Sans GB,
+    Microsoft Yahei, Microsoft Sans Serif, sans-serif, '\5b8b\4f53';
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+body {
+  font-size: 12px;
+}

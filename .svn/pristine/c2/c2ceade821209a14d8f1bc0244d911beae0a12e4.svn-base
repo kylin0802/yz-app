@@ -1,0 +1,163 @@
+import React from 'react'
+import Dialog, { withLazy } from '@/components/Dialog'
+import { Input, Form, Row, Col, Select, Button, DatePicker, message } from 'antd'
+import locale from 'antd/es/date-picker/locale/zh_CN';
+// import zh_CN from 'antd/lib/locale-provider/zh_CN';
+import 'moment/locale/zh-cn';
+
+import './index.less'
+import fetch from '@/services/axios';
+import moment from 'moment';
+
+import { get, isFunction } from 'lodash'
+const uuid = () => {
+  let s = [];
+  let hexDigits = "0123456789abcdef";
+  for (var i = 0; i < 36; i++) {
+      s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+  }
+  s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
+  s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+  s[8] = s[13] = s[18] = s[23] = "";
+
+  var uuid = s.join("");
+  return uuid;
+}
+const { RangePicker } = DatePicker
+const { Option } = Select
+const Label = ({ title, children }) => { // 菜单
+  return (
+    <Form.Item className="examNumber-page-add-examinee-label">
+      <label className="examNumber-page-add-examinee-label-item">{title}：</label>
+      <span className="examNumber-page-add-examinee-label-span">{children}</span>
+    </Form.Item>
+  )
+}
+//重置
+
+const WrapForm = props => {
+  const { roomData=[], addAPI='', onCancel , siteId='', onReload} = props
+  const { getFieldDecorator, resetFields, validateFields } = props.form
+
+  // 参数 name examNumberId
+  const requsetAddExamNumber = param => { // 添加考生
+    try {
+      fetch.post(addAPI, param).then(res => {
+        if(get(res, 'state')=== 10000) {
+            message.success(res.message, 1).then(() => {
+              onCancel(); //关闭
+              isFunction(onReload) &&  onReload()
+              reset()
+            });
+        } else if(get(res,'state') === -1) {
+          message.error(res.message)
+        }
+      })
+    }catch(err) {
+      console.log('报错', err)
+    } 
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    validateFields((err, values) => {
+      if (!err) {
+        let { examTime, authorizedTime,examRoom,  name,remarks, subject} = values
+        let paramTime = { // 时间蹉
+          beginTime: parseInt(moment(examTime[0]).valueOf() / 1000),
+          endTime: parseInt(moment(examTime[1]).valueOf() / 1000),
+          authorizedBeginTime: parseInt(moment(authorizedTime[0]).valueOf() / 1000),
+          authorizedEndTime: parseInt(moment(authorizedTime[1]).valueOf() / 1000)
+        };
+      
+      const examNumber = {
+        ...paramTime,
+        name,
+        remarks,
+        subject,
+        examRoom: JSON.parse(examRoom),
+        examNumberId: uuid()
+      } 
+      requsetAddExamNumber({siteId, examNumber})
+      }
+    })
+  }
+
+  const reset = e => {
+    resetFields(['name', 'remarks', 'sex', 'examTime', 'authorizedTime', 'subject', 'examRoom'])
+  }
+
+
+  return (
+    <Form className="examNumber-page-add-examinee" onSubmit={handleSubmit}>
+      <Row>
+        <Col span={12}>
+          <Label title="考场名称">
+            {getFieldDecorator('name', { initialValue: '' })(<Input />)}
+          </Label>
+          <Label title="考试科目">
+            {getFieldDecorator('subject', { initialValue: '' })(<Input />)}
+          </Label>
+
+        
+          <Label title="授权考试时间">
+            {getFieldDecorator('examTime', { initialValue: '' })(
+              <RangePicker
+                showTime={{ format: 'HH:mm' }}
+                format="YYYY-MM-DD HH:mm"
+                locale={locale}
+                placeholder={['开始时间', '结束时间']}
+              />)
+            }
+          </Label>
+          <Label title="授权通过时间">
+            {getFieldDecorator('authorizedTime', { initialValue: '' })(<RangePicker
+              showTime={{ format: 'HH:mm' }}
+              format="YYYY-MM-DD HH:mm"
+              locale={locale}
+              placeholder={['开始时间', '结束时间']}
+            />)}
+
+          </Label>
+        </Col>
+        <Col span={12}>
+         
+          <Label title="考试">
+            {getFieldDecorator('examRoom', { initialValue: '' })(<Select>
+              {!!roomData && !!roomData.length && roomData.map(item => (<Option value={JSON.stringify(item)} key={item.examRoomId} >{item.name}</Option>))}
+            </Select>)}
+          </Label>
+          <Label title="备注">
+            {getFieldDecorator('remarks', { initialValue: '' })(<Input />)}
+          </Label>
+        </Col>
+      </Row>
+      <hr />
+      <Row justify="center" type="flex">
+        <Col span={3}>
+          <Button type="primary" htmlType="submit">
+            保存
+          </Button>
+        </Col>
+        <Col span={3}>
+          <Button type="danger" onClick={reset}>
+            重置
+          </Button>
+        </Col>
+      </Row>
+    </Form>
+  )
+}
+
+const Wrap = Form.create()(WrapForm)
+function AddExamNumber(props) {
+  return (
+    <Dialog title="添加考场" {...props} footer={null}>
+      <Wrap {...props} />
+    </Dialog>
+  )
+}
+AddExamNumber.defaultProps = {
+  width: "900px"
+}
+export default withLazy(AddExamNumber)

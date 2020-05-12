@@ -1,0 +1,145 @@
+import React, { useState, useEffect, useCallback } from 'react'
+import { Table, Button, Icon } from 'antd'
+import { get } from 'lodash'
+import moment from 'moment';
+
+import fetch from '@/services/axios'
+import DeleteExamNumber from './components/DeleteExamNumber'
+import Search from './components/Search'
+import AddExamNumber from './components/AddExamNumber'
+import EditorExamNumber from './components/EditorExamNumber'
+import './index.less'
+
+
+
+import {
+  EXAM_NUMBER_ADD_API,
+  EXAM_NUMBER_DELETE_API,
+  EXAM_NUMBER_LIST_API,
+  EXAM_NUMBER_EDITOR_API,
+  EXAM_SITE_API,
+  EXAM_ROOM_API
+} from './apis'
+
+function ExamNumber() {
+  const siteId = localStorage.getItem('siteId') || ''
+  const [siteData, setSiteData] = useState([])
+  const [roomData, setRoomData] = useState([])
+  const [tableData, setTableData] = useState([])
+  const [pagination, setPagination] = useState({
+    siteId
+  })
+  const [reRoadCount, setReRoadCount] = useState(0)
+  const columns = [
+    {
+      key: 1,
+      dataIndex: 'name',
+      title: '考场名称'
+    },
+    {
+      key: 2,
+      dataIndex: 'subject',
+      title: '科目'
+    },
+    {
+      key: 3,
+      title: '考试时间',
+      render: (({ beginTime, endTime }) =>
+        (<>{moment(beginTime * 1000).format('YYYY-MM-DD HH:mm:ss')} -
+          {moment(endTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</>))
+    },
+    {
+      key: 4,
+      title: '授权通过时间',
+      render: (({ authorizedBeginTime, authorizedEndTime }) =>
+        (<>{moment(authorizedBeginTime * 1000).format('YYYY-MM-DD HH:mm:ss')}-
+          {moment(authorizedEndTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</>))
+    },
+    {
+      title: '操作',
+      key: 'action',
+      render: (paramsData) => (<>
+        <EditorExamNumber
+          roomData={roomData || []}
+          paramsData={paramsData}
+          siteId={pagination.siteId}
+          editorAPI={EXAM_NUMBER_EDITOR_API}
+          onReload={() => setReRoadCount(reRoadCount+1)}
+        >
+          <a> 编辑 </a>
+        </EditorExamNumber>
+          |
+        <DeleteExamNumber
+          examNumberId={paramsData.examNumberId}
+          siteId={pagination.siteId}
+          deleteAPI={EXAM_NUMBER_DELETE_API}
+          onReload={() => setReRoadCount(reRoadCount+1)} // 优化代码
+        >
+          <a> 删除</a>
+        </DeleteExamNumber>
+
+      </>)
+    }
+  ]
+  const onHandleSearch = useCallback( // 下拉数据过多一次渲染足够
+    (valueObject) => {
+      localStorage.setItem('siteId', valueObject.siteId)
+      setPagination({ ...valueObject })
+    },
+    [])
+
+  useEffect(() => {
+    fetch.post(EXAM_NUMBER_LIST_API, { ...pagination }).then(res => { // 追踪 增删改
+      if (get(res, 'state') === 10000) {
+        setTableData(get(res, 'data'))
+      }
+    })
+
+  }, [JSON.stringify(pagination.siteId), reRoadCount])
+
+  useEffect(() => {
+    fetch.post(EXAM_SITE_API).then(res => {
+      if (get(res, 'state') === 10000) {
+        setSiteData(get(res, 'data'))
+      }
+    })
+  }, [])
+
+  useEffect(() => {
+    fetch.post(EXAM_ROOM_API, { ...pagination }).then(res => {
+      if (get(res, 'state') === 10000) {
+        setRoomData(get(res, 'data'))
+      }
+    })
+  }, [JSON.stringify(pagination.siteId)])
+
+  return (
+    <section className="examNumber-page">
+      {/* {console.log('更新', reRoadCount)} */}
+      <section className="examNumber-page-header" >
+        <Search
+          onHandleSearch={onHandleSearch}
+          siteData={siteData}
+          siteId={pagination.siteId} />
+      </section>
+      <section className="examNumber-page-list">
+        <section className="examNumber-page-list-operation">
+          <AddExamNumber
+            roomData={roomData || []}
+            siteId={pagination.siteId}
+            addAPI={EXAM_NUMBER_ADD_API}
+            onReload={() => setReRoadCount(reRoadCount+1)}
+          >
+            <Button type="primary"><Icon type="plus" />添加</Button>
+          </AddExamNumber>
+        </section>
+        <section className="examNumber-page-list-content">
+          <Table columns={columns} dataSource={tableData} rowKey={record => record.examNumberId}/>
+        </section>
+      </section>
+    </section>
+  )
+}
+
+
+export default ExamNumber

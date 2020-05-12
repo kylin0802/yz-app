@@ -1,0 +1,85 @@
+import React, { useState, useEffect } from 'react'
+import { SETTING_LIST_API } from './apis'
+import { get } from 'lodash'
+import { Table } from 'antd'
+import Search from './components/Search'
+import SettingDetail from './components/SettingDetail'
+import fetch from '@/services/axios'
+import './index.less'
+function Setting() {
+  const [tableData, setTableData] = useState([])
+  const pagination = {
+    pageNumber: 0,
+    pageSize: 100
+  }
+  const columns = [
+    {
+      key: 2,
+      title: '安装位置',
+      dataIndex: 'location'
+    },
+    {
+      key: 3,
+      title: '设备Ip',
+      dataIndex: 'ip'
+    },
+    {
+      key: 4,
+      title: '设备编号',
+      dataIndex: 'deviceNO'
+    },
+    {
+      key: 5,
+      title: '设备名称',
+      // dataIndex: 'name',
+    render: ({name}) => <span>{name ? name: '无' }</span>
+    },
+    {
+      title: '操作',
+      key: 'action',
+      render: params => (
+        <>
+        <SettingDetail params={params}>
+          <a>详情</a>
+        </SettingDetail>
+        </>
+      )
+
+    }
+  ]
+  const onHandleSearch = valueObject => {
+    let params = {...pagination, ...valueObject}
+    // console.log(params)
+    requestSettingList(params)
+  }
+
+  
+  const requestSettingList = (params=pagination) => {
+    fetch.post(SETTING_LIST_API, params).then(res => {
+      if (get(res, 'state') === 10000) {
+        setTableData(get(res, 'data'))
+      }
+    })
+  }
+  useEffect(() => {
+    requestSettingList()
+  }, [])
+  
+  return (
+    <>
+      <section className="setting-page">
+        <section className="setting-page-header"></section>
+        <section className="setting-page-list">
+          <section className="setting-page-list-opreation">
+            <Search onHandleSearch = {onHandleSearch}/>
+          </section>
+          <section className="setting-page-list-content">
+            <Table columns={columns} dataSource={tableData} rowKey={record => record.deviceNO}/>
+          </section>
+        </section>
+      </section>
+    </>
+  )
+}
+
+export default Setting

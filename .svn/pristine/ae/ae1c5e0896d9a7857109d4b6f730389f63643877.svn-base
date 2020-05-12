@@ -1,0 +1,60 @@
+import React, { useState, useEffect, cloneElement } from 'react';
+
+import { Modal } from 'antd';
+
+import classNames from 'classnames';
+
+import './index.less';
+
+const withLazy = WrapComponent => {
+  return function LazyComponent(props) {
+
+    let { children, isLazy = true, visible: propsVisible } = props;
+    // console.log(propsVisible)
+    const [loaded, setLoaded] = useState(!isLazy);
+    const [visible, setVisible] = useState(propsVisible);
+  //  console.log(props, propsVisible)
+    useEffect(() => {
+      setVisible(props.visible);
+    }, [props.visible]);
+
+    const show = () => {
+      setVisible(true);
+      setLoaded(true);
+    };
+
+    const hide = () => {
+      setVisible(false);
+    };
+
+    if (!children) {
+      return <WrapComponent {...props} visible={visible} onCancel={hide} />;
+    }
+
+    return (
+      <>
+        {cloneElement(children, {
+          onClick: show
+        })}
+        {loaded && <WrapComponent {...props} visible={visible} onCancel={hide} />}
+      </>
+    );
+  };
+};
+
+export default function Dialog(props) {
+  let { className, onBeforeShow, ...rest } = props;
+  useEffect(() => {
+    if (props.visible) {
+      onBeforeShow(props.onCancel);
+    }
+  }, [props.visible, onBeforeShow, props.onCancel]);
+  // console.log(rest)
+  return <Modal {...rest} className={classNames('yz-dialog', className)} okText='确定' cancelText="取消"/>;
+}
+
+Dialog.defaultProps = {
+  onBeforeShow: () => {}
+};
+
+export { withLazy };

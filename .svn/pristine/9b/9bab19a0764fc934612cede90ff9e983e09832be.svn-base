@@ -1,0 +1,44 @@
+import React from 'react'
+import { message } from 'antd'
+import Dialog, { withLazy } from '@/components/Dialog'
+import fetch from '@/services/axios'
+import { get } from 'lodash';
+
+const CheckDialog = props => {
+  const { contentTitle,
+    onReload,
+    params,
+    onCancel,
+    checkAPI } = props
+  const handleCheck = e => {
+    const {siteId, examNumberId} = params
+    fetch.post(checkAPI, {
+      siteId,
+      examNumberId
+    }).then(res => {
+      if (get(res, 'state') === 10000) {
+        onReload({...params})
+        message.info('校验中')
+      }else {
+        message.info(get(res, 'message'))
+      }
+      onCancel()
+    })
+  }
+  return (
+    <>
+      <Dialog title="详情" {...props} onOk={handleCheck}>
+        {contentTitle}
+      </Dialog>
+
+    </>
+  )
+}
+
+CheckDialog.defaultProps = {
+  contentTitle: '确定是否校验这场考场 ？',
+  title: '校验'
+}
+
+
+export default withLazy(CheckDialog)

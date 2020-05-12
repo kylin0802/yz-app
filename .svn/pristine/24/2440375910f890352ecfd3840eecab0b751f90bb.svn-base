@@ -1,0 +1,108 @@
+
+import React, { Fragment , useEffect, useState} from 'react'
+import { get } from 'lodash'
+import './index.less';
+import { Form, Input, Button, Select } from 'antd'
+
+import {EXAM_SITE_API , EXAM_NUMBER_API} from '../../apis'
+import fetch from '@/services/axios'
+
+const {Option} = Select
+
+
+
+
+const Label = ({ title, children }) => {
+  return (
+    <Form.Item className="examinee-page-search-label">
+      <label className="examinee-page-search-label-item">{title}：</label>
+      <span className="examinee-page-search-label-span">{children}</span>
+    </Form.Item>
+  )
+}
+
+const Search = (props) => {
+
+ 
+  const { getFieldDecorator, resetFields, validateFields } = props.form
+  const { onHandleSearch } = props
+  const [siteData, setSiteData ] = useState([])
+  const [numberData, setNumberData] = useState([])
+  // const treeChildren = get(treeJSON, 'examNumber', [])
+  // console.log('treeChildren', treeChildren)
+  const handleSubmit = e => {
+    // console.log(e)
+    e.preventDefault();
+    validateFields((err, values) => {
+      if (!err) {
+        // console.log(values)
+        onHandleSearch(values)
+      }
+    })
+  }
+
+  //重置
+  const reset = () => {
+    setNumberData([])
+    resetFields(['examineeName', 'seatNo', 'examNumberId', 'siteData']);
+    onHandleSearch({ examineeName: '', seatNo: '', examNumberId: '' })
+  }
+
+  useEffect(() => {
+    fetch.post(EXAM_SITE_API).then(res => {
+      if(get(res, 'state') === 10000) {
+        setSiteData(get(res, 'data'))
+      }
+    })
+  }, [])
+  
+  const handleChange = siteId => {
+    fetch.post(EXAM_NUMBER_API, {siteId}).then(res => {
+      if(get(res, 'state') === 10000) {
+        const data = get(res, 'data') || []
+        resetFields(['examNumberId']);
+        setNumberData(data)
+      }
+    })
+  }
+
+  return (
+    <Fragment>
+      <Form onSubmit={handleSubmit} className="examinee-page-search">
+        <section className="examinee-page-search-list">
+          <Label title="考生姓名">{getFieldDecorator('examineeName', { initialValue: '' })(<Input />)}</Label>
+          <Label title="座位号">{getFieldDecorator('seatNo', { initialValue: '' })(<Input />)}</Label>
+          <Label title="考点">{
+            getFieldDecorator('siteData', { initialValue: '' })(
+              <Select  onChange={handleChange}>{
+                !!siteData&&siteData.map(({siteId, siteName}) => (
+                <Option value={siteId} key={siteId}>{siteName}</Option>)
+                )}
+              </Select>
+            )}</Label>
+          <Label title="考场">
+         {getFieldDecorator('examNumberId', {initialValue: ''})(
+            <Select disabled={!numberData.length}>{
+              !!numberData.length&&numberData.map(item => (
+              <Option value={item.examNumberId} key={item.examNumberId}>{item.name}</Option>)
+              )}
+            </Select>
+         )}
+          </Label>
+        </section>
+        <section className="examinee-page-search-buttons">
+          <Button type="primary" htmlType="submit">
+            查询
+          </Button>
+          <Button type="danger" onClick={reset}>
+            重置
+          </Button>
+        </section>
+      </Form>
+    </Fragment>
+
+  )
+}
+
+export default Form.create()(Search);
+

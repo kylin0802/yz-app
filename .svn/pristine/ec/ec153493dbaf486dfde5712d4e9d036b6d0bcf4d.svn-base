@@ -1,0 +1,36 @@
+import React from 'react' 
+import Dialog, {withLazy} from '@/components/Dialog'
+import {Message} from 'antd'
+import fetch from '@/services/axios';
+import { get, isFunction } from 'lodash'
+
+
+
+  function StateQuery(props) {
+    const {API,onCancel,record,title,contentTitle,onReload} = props
+    // console.log('拿到的额',record)
+    const handleDelete=()=>{
+        // console.log('lol',param)
+        fetch.post(API,{examNumberId:record.id}).then(res=>{
+            console.log('req',res)
+            if(get(res,'state')===10000){
+                Message.success('更新成功')
+                isFunction(onReload) && onReload();
+                onCancel()
+            }
+        })
+    }
+    return (
+        <Dialog title={title} onOk={handleDelete} {...props}>
+        <div>{contentTitle}</div>
+      </Dialog>
+    )
+  }
+  
+  StateQuery.defaultProps = {
+    width: '500px',
+    title: '库状态更新',
+  contentTitle: '是否确定要更新库状态？'
+  }
+  
+  export default withLazy(StateQuery)

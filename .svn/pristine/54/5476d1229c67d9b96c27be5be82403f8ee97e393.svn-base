@@ -1,0 +1,44 @@
+.modalData-page{
+   &-header{
+     .ant-col-24{
+       font-size:16px;
+       color:#474749;
+       margin-bottom: 25px
+     }
+     &-oldImgInfo{
+       text-align: center;
+       height:155px;
+       width:100px;
+       img{
+         height:134px;
+         width: 100px;
+         border: 1px solid #909399;
+       }
+     }
+     &-newImgInfo{
+      text-align: center;
+      height:155px;
+      width:100px;
+      img{
+        height:134px;
+         width: 100px;
+         border: 1px solid #909399;
+      }
+     }
+     &-top{
+       margin-top: 25px;
+     }
+     &-text{
+       color:#909399;
+     }
+   }
+   &-footer{
+     margin-top:20px;
+     .ant-col-8{
+      font-size:16px;
+      color:#474749;
+      margin-bottom: 25px
+    
+     }
+   }
+}

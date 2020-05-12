@@ -1,0 +1,42 @@
+import React from 'react'
+import { message } from 'antd'
+import Dialog, { withLazy } from '@/components/Dialog'
+import fetch from '@/services/axios'
+import { get } from 'lodash';
+
+const DeleteExamNumber = props => {
+  const { contentTitle,
+    onReload,
+    siteId,
+    examNumberId,
+    onCancel,
+    deleteAPI } = props
+  const handleDelete = params => {
+    fetch.post(deleteAPI, {
+      siteId,
+      examNumberId
+    }).then(res => {
+      if (get(res, 'state') === 10000) {
+        onReload()
+      }
+      message.info(get(res, 'message'))
+      onCancel()
+    })
+  }
+  return (
+    <>
+      <Dialog title="详情" {...props} onOk={handleDelete}>
+        {contentTitle}
+      </Dialog>
+
+    </>
+  )
+}
+
+DeleteExamNumber.defaultProps = {
+  contentTitle: '确定是否删除这场考场 ？',
+  title: '删除'
+}
+
+
+export default withLazy(DeleteExamNumber)

@@ -1,0 +1,5 @@
+export const POINT_LIST='/yzSmartGate/manage/examSite/loadExamSiteList'//考点下拉列表
+export const ROOM_LIST='/yzSmartGate/manage/examSite/queryExamRoomList'//考室列表
+export const ADD_EXAM_ROOM='/yzSmartGate/manage/examSite/addExamRoom'//考室添加
+export const DELETE_EXAM_ROOM='/yzSmartGate/manage/examSite/deleteExamRoom'//删除考室
+export const DETAIL_EXAM_ROOM='/yzSmartGate/manage/examSite/modifyExamRoom'//考室信息修改

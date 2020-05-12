@@ -1,0 +1,101 @@
+import React,{  useState,useEffect, } from 'react'
+import { get,isFunction } from 'lodash'
+import fetch from '@/services/axios'
+import {Select,Button,Row,Form,Col,Message,Icon} from 'antd'
+import {NUMBER_LOADING_API,POINT_LOADING_API,DB_BUILD_API} from '../../API'
+const { Option } = Select
+    const Label = ({ title, children }) => {
+      return (
+        <Form.Item className="headerSearch-page-search-label">
+          <label className="headerSearch-page-search-label-item">{title}：</label>
+          <span className="headerSearch-page-search-label-span">{children}</span>
+        </Form.Item>
+      )
+    }
+
+const HeaderSearch = (props) =>{
+     const { getFieldDecorator, validateFields } = props.form
+     const {onReload} = props
+     const [point,setPoint] = useState([])
+     const [number,setNumber] = useState([])
+
+     const getPoint = () => {
+        fetch.post(POINT_LOADING_API).then(res => {
+            // console.log('考点',res.data)
+            if (get(res, 'state') === 10000) {
+                setPoint(res.data)
+            }
+        })
+    }
+    useEffect(() => {
+        getPoint()
+    }, [])
+    const changeEvent =(e) =>{
+      //  console.log('e',e)
+       fetch.post(NUMBER_LOADING_API,{siteId:e}).then(res=>{
+           if(get(res,'state')===10000){
+            setNumber(res.data)
+           }
+          //  console.log('考场',res.data)
+       })
+    }
+    const handleSubmit = e => {
+        // const { resetFields } = props.form    
+      e.preventDefault();
+      validateFields((err, values) => {
+        if (!err) {
+          // console.log('values', values)
+          fetch.post(DB_BUILD_API,{examNumberId:values.examNumberId}).then(res=>{
+            if(get(res,'state')===10000){
+                console.log('success',res.data.message)
+                if(res.data.message==="success"){
+                  Message.success('建库成功')
+                }else{
+                  Message.warn('建库失败，请查看是否重复建库')
+                }
+               
+                reset()
+                isFunction(onReload) &&  onReload()               
+               }
+           })
+         }
+      })
+    }
+    const reset = () => {//重置
+        const { resetFields } = props.form   
+        resetFields();
+      }
+    return(
+        <Form onSubmit={handleSubmit}>
+        <Row>
+          <Col span={5}>
+          <Label title="考点">
+              {getFieldDecorator('siteId',
+                { initialValue: '' }
+              )(<Select placeholder="请选择考点" style={{width:"147px"}} onChange={(e)=>changeEvent(e)}>
+                {point && point.map((item) => {
+                  return <Option value={item.siteId} key={item.siteId}>{item.siteName}</Option>
+                })}
+                </Select>)
+              }
+            </Label>
+            </Col>
+            <Col span={5} style={{marginLeft:'-60px'}}>
+            <Label title="考场">
+              {getFieldDecorator('examNumberId',
+                { initialValue: '' }
+              )(<Select placeholder="请选择考场" style={{width:"147px"}} disabled={!number.length}>
+                {number && number.map((item) => {
+                  return <Option value={item.examNumberId} key={item.examNumberId}>{item.name}</Option>
+                })}
+                </Select>)
+              }
+            </Label>
+          </Col>   
+          {/* <Button type="dashed" style={{marginRight:"5px"}} >重置</Button> */}
+          <Button type="primary" htmlType="submit" style={{marginTop:"4px"}}><Icon type="plus"/>建库</Button>
+          </Row>
+      </Form>
+    )
+}
+export default Form.create()(HeaderSearch)

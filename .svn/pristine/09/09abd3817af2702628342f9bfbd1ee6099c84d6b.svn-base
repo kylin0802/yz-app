@@ -1,0 +1,13 @@
+export const PREFIX_API='/yzSmartGate/common/loadDfsPrefix'//获取公共的路径
+
+export const GATE_LIST_API='/yzSmartGate/manage/examDevice/loadDeviceList'//获取通行设备
+
+export const CARD_LIST_API='https://cz.droomo.top/mock/5ceba4ed8343a577a41e2e66/example_copy/haohao'//获取通行记录
+
+export const POINT_LIST_API='/yzSmartGate/manage/examSite/loadExamSiteList'//获取考点下拉列表
+
+export const NUMBER_LIST_API='/yzSmartGate/manage/examSite/loadExamNumberList'//获取考场下拉列表
+
+export const CARD_DATA_LIST_API='/yzSmartGate/manage/examPassthrough/query'//获取当天数据列表
+
+export const STUDENT_INFO_API='/yzSmartGate/manage/examinee/query'//获取学生的具体信息

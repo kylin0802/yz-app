@@ -1,0 +1,123 @@
+import React, { useState, useEffect } from 'react'
+import HeaderSearch from './components/HeaderSearch'
+import { Table, Button } from 'antd'
+import { get } from 'lodash'
+import fetch from '@/services/axios'
+import { DB_LIST_API, DB_DELETE_API, DB_REBUILD_API, DB_RELOAD_API, DB_UNLOADIND_API, DB_STATUS_API } from './API'
+import DeleteDb from './components/DeleteDB'
+import RebuildDb from './components/RebuildDB'
+import LoadDb from './components/LoadDB'
+import UnloadDb from './components/UnloadDB'
+import StateQuery from './components/StateQuery'
+import './index.less'
+
+
+export default VerificationDatabase => {
+  const columns = [
+    {
+      title: '序号',
+      render: (text, record, index) => `${index + 1}`,
+      key: 'index',
+      width: 70,
+      // fixed: 'left',
+      align: 'center',
+    },
+    {
+      key: 'name',
+      title: '库名称',
+      align: 'center',
+      dataIndex: 'name'
+    },
+    {
+      key: 'id',
+      title: '教室编号',
+      align: 'center',
+      dataIndex: 'id'
+    },
+    {
+      key: 'totalCount',
+      title: '考生人数（人）',
+      align: 'center',
+      dataIndex: 'totalCount'
+    },
+    {
+      key: 'dbStatus',
+      title: '库状态',
+      align: 'center',
+      dataIndex: 'dbStatus',
+      render: (dbStatus = '') => (<span> {dbStatus === -1 ? "建库失败" : dbStatus === 0 ? "待处理" : dbStatus === 1 ? "执行建库中" : "建库成功"} </span>)
+    },
+    {
+      key: 'loaded',
+      title: '加载状态',
+      align: 'center',
+      dataIndex: 'loaded',
+      render: (loaded = '') => (<span> {loaded === false ? "未加载" : "已加载"} </span>),
+    },
+
+    {
+      title: '操作',
+      key: 'action',
+      align: 'center',
+      render: (text, record, operation) => {
+        let { loaded, dbStatus } = record
+        return (
+          <>
+            <DeleteDb record={record} API={DB_DELETE_API} onReload={getDbList}>
+              <Button className="verificationDatabase-page-content-button" type="danger" size="small">删除库</Button>
+            </DeleteDb>
+
+            <RebuildDb record={record} API={DB_REBUILD_API} onReload={getDbList}>
+              <Button className="verificationDatabase-page-content-button" type="primary" size="small">重建库</Button>
+            </RebuildDb>
+
+            <UnloadDb record={record} API={DB_UNLOADIND_API} onReload={getDbList}>
+              <Button className="verificationDatabase-page-content-button" type="danger" size="small" disabled={loaded === false ? true : false}>卸载库</Button>
+            </UnloadDb>
+
+            <LoadDb record={record} API={DB_RELOAD_API} onReload={getDbList}>
+              <Button className="verificationDatabase-page-content-button" type="primary" size="small" disabled={loaded === true ? true : false}>加载库</Button>
+            </LoadDb>
+            <StateQuery record={record} API={DB_STATUS_API} onReload={getDbList}>
+              <Button className="verificationDatabase-page-content-button" type="primary" size="small" disabled={dbStatus === 2 ? true : false}>更新库状态</Button>
+            </StateQuery>
+          </>
+        )
+      }
+    }
+  ];
+  const [dbList, setdbList] = useState([])
+  const [paramer, setParamer] = useState({
+    "pageNumber": 1,
+    "pageSize": 10
+  })
+  const getDbList = (param = paramer) => {
+    fetch.post(DB_LIST_API, param).then(res => {
+      if (get(res, 'state') === 10000) {
+        // console.log('request',res)
+        setdbList(res.data)
+      }
+    })
+  }
+
+  useEffect(() => {
+    getDbList(paramer)
+  }, [])
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      getDbList(paramer)
+    }, 60 * 1000 * 3)
+    return () => clearInterval(timer)
+  }, [])
+  return (
+    <section className="verificationDatabase-page">
+      <section className="verificationDatabase-page-header">
+        <HeaderSearch onReload={getDbList} />
+      </section>
+      <section className="verificationDatabase-page-content">
+        <Table columns={columns} dataSource={dbList} rowKey={record => record.id}  />
+      </section>
+    </section>
+  )
+}

@@ -1,0 +1,6 @@
+export const EXAM_NUMBER_LIST_API = '/yzSmartGate/manage/examSite/loadExamNumberList'
+export const EXAM_NUMBER_EDITOR_API ='/yzSmartGate/manage/examSite/modifyExamNumber'
+export const EXAM_NUMBER_DELETE_API ='/yzSmartGate/manage/examSite/deleteExamNumber'
+export const EXAM_NUMBER_ADD_API ='/yzSmartGate/manage/examSite/addExamNumber'
+export const EXAM_SITE_API = '/yzSmartGate/manage/examSite/loadExamSiteList'
+export const EXAM_ROOM_API ='/yzSmartGate/manage/examSite/loadExamRoomList'

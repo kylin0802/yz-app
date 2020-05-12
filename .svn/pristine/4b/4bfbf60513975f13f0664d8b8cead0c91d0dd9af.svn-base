@@ -1,0 +1,36 @@
+import React from 'react' 
+import Dialog, {withLazy} from '@/components/Dialog'
+import {Message} from 'antd'
+import fetch from '@/services/axios';
+import { get, isFunction } from 'lodash'
+
+
+
+  function LoadDb(props) {
+    const {API,onCancel,record,title,contentTitle,onReload} = props
+    // console.log('拿到的额',record)
+    const handleDelete=()=>{
+        // console.log('lol',param)
+        fetch.post(API,{examNumberId:record.id}).then(res=>{
+            console.log('request',res)
+            if(get(res,'state')===10000){
+                Message.success(res.data.message==="success"?'加载成功':'加载失败')
+                isFunction(onReload) && onReload();
+                onCancel()
+            }
+        })
+    }
+    return (
+        <Dialog title={title} onOk={handleDelete} {...props}>
+        <div>{contentTitle}</div>
+      </Dialog>
+    )
+  }
+  
+  LoadDb.defaultProps = {
+    width: '500px',
+    title: '加载库',
+  contentTitle: '是否确定加载库？'
+  }
+  
+  export default withLazy(LoadDb)

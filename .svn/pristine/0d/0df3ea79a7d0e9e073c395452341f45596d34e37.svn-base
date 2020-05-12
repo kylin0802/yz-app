@@ -1,0 +1,34 @@
+import React from 'react';
+
+import URI from 'urijs';
+import { Link, withRouter } from 'react-router-dom';
+import classNames from 'classnames';
+import routesConfig from '@/routes/routesConfig'
+import './index.less';
+
+const getActiveKey = (path, level = 1, defaultKey = '') => {
+  let pathKeys = (path || '').split('/') || [];
+  return pathKeys[level] || defaultKey;
+};
+
+function Menu(props) {
+  let selectedMenu = getActiveKey(window.location.hash);
+  return (
+    <section className="left-menu">
+      {routesConfig.map(menu => {
+        return (
+          <Link
+            className={classNames('menu-item', {
+              selected: selectedMenu === menu.key
+            })}
+            to={`/${menu.key}`} key={menu.key}>
+              {menu.icon &&<span className={classNames('anticon-user', menu.icon)} />}
+            {menu.name}
+          </Link>
+        );
+      })}
+    </section>
+  );
+}
+
+export default withRouter(Menu);

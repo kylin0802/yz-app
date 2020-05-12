@@ -1,0 +1,64 @@
+import React from 'react'
+import Dialog, {withLazy} from '@/components/Dialog'
+import styles from './index.module.less'
+import {Row, Col} from 'antd'
+const Wrap = props => {
+  const { 
+    location, ip, port, deviceNO, name, channelNO, gateName
+   } = props.params
+  return (
+    <>
+    <section className={styles.wrap}>
+      <Row className={styles.module} >
+        <Col className={styles.moduleCol} span={12}>
+          <span className={styles.moduleSpan}>设备名称：</span>
+  <span className={styles.moduleItem}>{name|| '无'}</span>
+        </Col>
+        <Col className={styles.moduleCol} span={12}>
+          <span className={styles.moduleSpan}>安装位置：</span>
+  <span className={styles.moduleItem}>{location|| '无'}</span>
+        </Col>
+        <Col className={styles.moduleCol} span={12}>
+          <span className={styles.moduleSpan}>设备类型：</span>
+          <span className={styles.moduleItem}>无</span>
+        </Col>
+        <Col className={styles.moduleCol} span={12}>
+          <span className={styles.moduleSpan}>闸机编号：</span>
+  <span className={styles.moduleItem}>{channelNO || '无'}</span>
+        </Col>
+
+        <Col className={styles.moduleCol} span={12}>
+          <span className={styles.moduleSpan}>设备编号：</span>
+  <span className={styles.moduleItem}>{deviceNO || '无'}</span>
+        </Col>
+        <Col className={styles.moduleCol} span={12}>
+          <span className={styles.moduleSpan}>闸机名称：</span>
+  <span className={styles.moduleItem}>{gateName || '无'}</span>
+        </Col>
+        <Col className={styles.moduleCol} span={12}>
+          <span className={styles.moduleSpan}>ip地址：</span>
+  <span className={styles.moduleItem}>{ip || '无'}</span>
+        </Col>
+        <Col className={styles.moduleCol} span={12}>
+          <span className={styles.moduleSpan}>端口：</span>
+  <span className={styles.moduleItem}>{port || '无'}</span>
+        </Col>
+      </Row>
+    </section>
+    
+    </>
+  )
+}
+
+
+const SettingDetail = props =>  {
+  return (
+    <Dialog  {...props} title='详情' footer={null}>
+      <Wrap {...props} />
+    </Dialog>
+  )
+}
+SettingDetail.defaultProps = {
+  width: '600px'
+}
+export default withLazy(SettingDetail)

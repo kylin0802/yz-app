@@ -1,0 +1,95 @@
+import React, { useState, useEffect } from 'react'
+import { Button, Table,Icon } from 'antd'
+import Search from './component/SearchRoom'
+import AddExamRoom from './component/AddExamRoom'
+import DetailExamRoom from './component/DetailExamRoom'
+import DeleteExamRoom from './component/DeleteExamRoom'
+import { get } from 'lodash'
+import fetch from '@/services/axios'
+import { POINT_LIST, ROOM_LIST, ADD_EXAM_ROOM, DELETE_EXAM_ROOM, DETAIL_EXAM_ROOM } from './API'
+import './index.less'
+export default ExamRoom => {
+  const [point, setPoint] = useState([])
+  const [room, setRoom] = useState([])
+
+  const getPointLIst = () => {
+    fetch.post(POINT_LIST).then(res => {
+      if (get(res, 'state') === 10000) {
+        // console.log('返回的数据',res.data&&res.data[0].siteId)
+        localStorage.setItem('siteId',res.data[0].siteId || '')
+        setPoint(res.data)
+      }
+    })
+  }
+  const getExamRoom = (param = { siteId: localStorage.getItem('siteId') }) => {
+    fetch.post(ROOM_LIST, param).then(res => {
+      if (get(res, 'state') === 10000) {
+        // console.log('考室',res.data.content)
+        setRoom(res.data.content)
+        // setInterval(()=>{
+        //    console.log('dasd',456)
+        // },5000)
+      }
+    })
+  }
+  useEffect(() => {
+    getPointLIst()
+    getExamRoom({ siteId: localStorage.getItem('siteId') })
+  }, [])
+
+  const changeRoom = (param) => {
+    getExamRoom(param)
+  }
+
+  const columns = [
+    {
+      key: 'name',
+      title: '教室名称',
+      align: 'center',
+      dataIndex: 'name'
+    },
+    {
+      key: 'examRoomId',
+      title: '教室编号',
+      align: 'center',
+      dataIndex: 'examRoomId'
+    },
+    {
+      title: '操作',
+      key: 'action',
+      align: 'center',
+      render: (text, record, operation) => {
+        return (
+          <>
+            <DetailExamRoom record={record} onReload={getExamRoom} API={DETAIL_EXAM_ROOM}>
+              <span className="examRoom-page-content-table-text">编辑</span>
+            </DetailExamRoom>
+            <span className="examRoom-page-content-table-f">|</span>
+            <DeleteExamRoom record={record} onReload={getExamRoom} API={DELETE_EXAM_ROOM}>
+              <span className="examRoom-page-content-table-text">删除</span>
+            </DeleteExamRoom>
+
+          </>
+        );
+      }
+    }
+  ];
+  return (
+    <section className="examRoom-page">
+      <section className="examRoom-page-header">
+        <Search point={point} changeRoom={changeRoom} siteId={localStorage.getItem('siteId')}/>
+      </section>
+      <section className="examRoom-page-content">
+        <section className="examRoom-page-content-bread">
+          {/* <span className="examRoom-page-content-bread-span">教室设置</span> */}
+          <AddExamRoom footer={null} visible={false} isLazy={true} API={ADD_EXAM_ROOM} onReload={getExamRoom}>
+            <Button type="primary" ><Icon type="plus"/>添加</Button>
+          </AddExamRoom>
+        </section>
+        <section className="examRoom-page-content-table">
+          <Table columns={columns} dataSource={room} rowKey={record => record.examRoomId}  />
+        </section>
+      </section>
+    </section>
+  )
+}

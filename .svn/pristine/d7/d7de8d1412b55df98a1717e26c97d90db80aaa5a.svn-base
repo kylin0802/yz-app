@@ -1,0 +1,57 @@
+import React from 'react'
+import { Form, Button, Input } from 'antd'
+import './index.less'
+
+const FormItem = Form.Item
+const Label = ({ title, children }) => (
+  <FormItem className="setting-page-search-label">
+    <label className="setting-page-search-label-item">{title}：</label>
+    <span className="setting-page-search-label-span">{children}</span>
+  </FormItem>
+)
+const Search = props => {
+  const {onHandleSearch} = props
+  const { validateFields, resetFields, getFieldDecorator } = props.form
+  const handleSubmit = e => {
+    e.preventDefault()
+    validateFields((err, values) => {
+      if(!err) {
+        onHandleSearch(values)
+      }
+    })
+  }
+
+  const reset = () => {
+    resetFields(['name', 'deviceType', 'location']);
+    onHandleSearch({ name: '', location: '', deviceType: '' })
+  }
+  return (
+    <>
+      <Form className="setting-page-search" onSubmit={handleSubmit}>
+        <section className="setting-page-search-list">
+          <Label title="设备类型">{
+            getFieldDecorator('deviceType', { initialValue: '' })(
+              <Input />
+            )}</Label>
+          <Label title="设备位置">
+         {getFieldDecorator('location', {initialValue: ''})(<Input />)}
+          </Label>
+          <Label title="设备名称">
+            {getFieldDecorator('name', {initialValue: ''})(<Input />)}
+          </Label>
+        </section>
+      <section className="setting-page-search-buttons">
+        <Button type="primary" htmlType="submit">查询</Button>
+        <Button type="danger" onClick={reset}>
+            重置
+          </Button>
+      </section>
+      </Form>
+    </>
+  )
+
+}
+
+
+
+export default Form.create()(Search)

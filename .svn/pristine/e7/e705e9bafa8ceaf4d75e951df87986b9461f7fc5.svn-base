@@ -1,0 +1,82 @@
+import React from 'react'
+import { Row, Col } from 'antd'
+import img from '@/images/test.jpg'
+import { timeFormatFilter } from '@/utils/filter'
+import './index.less'
+
+const ModalData = (props) => {
+    const { StudentInfo,ModalInfo,commonUrl} = props
+    // console.log('789', StudentInfo)
+    // console.log('xianqian', ModalInfo)
+    // console.log('fon',commonUrl)
+    let examNumberBrief = { examNumberName: [] }
+    StudentInfo && StudentInfo.examNumberBrief && StudentInfo.examNumberBrief.length !== 0 && StudentInfo.examNumberBrief.map(({ examNumberName }) => {
+      examNumberBrief.examNumberName.push(examNumberName)
+    })
+    return (
+        <section className="modalData-page">
+            <section className="modalData-page-header">
+                <Row>
+                    <Col span={8}>
+                        <Col span={12}>
+                            <section className="modalData-page-header-oldImgInfo">
+                                <span >现场照片</span>
+                                <img src={commonUrl + ModalInfo.facePhotoPath} alt="照片" style={{ objectFit: "cover" }} />
+                            </section>
+                        </Col>
+                        <Col span={12}>
+                            <section className="modalData-page-header-newImgInfo">
+                                <span>{ModalInfo.throughMode === "IDCard" ? '考生身份证照' : '考生照片'}</span>
+                                <img src={ModalInfo.throughMode === "IDCard" ? commonUrl + ModalInfo.scenePhotoPath : "/yzSmartGate/common/" + ModalInfo.headPhotoPath} alt="考生照片" style={{ objectFit: "cover" }} />
+                            </section>
+                        </Col>
+                    </Col>
+                    <Col span={8} className="modalData-page-header-top">
+                        <Col span={24}>
+                            <span>考生姓名:</span><span className="modalData-page-header-text">{StudentInfo&&StudentInfo.name !==0 ? StudentInfo.name:'暂无考生该信息'}</span>
+                        </Col>
+                        <Col span={24}>
+                            <span>准考证号:</span><span className="modalData-page-header-text">{StudentInfo && StudentInfo.personId !== 0 ? StudentInfo.personId : '暂无考生该信息'}</span>
+                        </Col>
+                        <Col span={24}>
+                            <span>联系方式:</span><span className="modalData-page-header-text">{StudentInfo && StudentInfo.phone !== 0 ? StudentInfo.phone : '暂无考生该信息'}</span>
+                        </Col>
+                        
+                    </Col>
+                    <Col span={8} className="modalData-page-header-top">
+                        <Col span={24}>
+                            <span>身份证号:</span><span className="modalData-page-header-text">{StudentInfo && StudentInfo.idCard !== 0 ? StudentInfo.idCard : '暂无考生该信息'}</span>
+                        </Col>
+                        <Col span={24}>
+                            <span>考场名称:</span><span className="modalData-page-header-text">{StudentInfo && StudentInfo.examNumberBrief && StudentInfo.examNumberBrief.length !== 0 ? examNumberBrief.examNumberName.join() : '暂无考生该信息'}</span>
+                        </Col>
+                        <Col span={24}>
+                            <span>座位号:</span><span className="modalData-page-header-text">{StudentInfo && StudentInfo.seatNo !== 0 ? StudentInfo.seatNo : '暂无考生该信息'}</span>
+                        </Col>
+                    </Col>
+                </Row>
+            </section>
+            <section className="modalData-page-footer"> 
+              <Row>
+                  <Col span={8}>
+                      <span>对比结果：</span><span className="modalData-page-header-text">{(ModalInfo.passResult === "pass" ? "通过" : "禁止通行")}</span>
+                  </Col>
+                  <Col span={8}>
+                      <span>对比相似度：</span><span className="modalData-page-header-text">{parseFloat(ModalInfo.similarity * 100).toFixed(1) + '%'}</span>
+                  </Col>
+                  <Col span={8}>
+                      <span>通行时间：</span><span className="modalData-page-header-text">{ModalInfo.occurTime && timeFormatFilter(ModalInfo.occurTime * 1000)}</span>
+                  </Col>
+              </Row>
+              <Row>
+                  <Col span={8}>
+                      <span>通行方向：</span><span className="modalData-page-header-text">{ModalInfo.direction === "in" ? '进闸' : '离开'}</span>
+                  </Col>
+              </Row>
+
+            </section>
+        </section>
+    )
+}
+
+export default ModalData

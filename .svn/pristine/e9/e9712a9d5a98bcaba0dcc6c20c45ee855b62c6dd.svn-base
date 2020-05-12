@@ -1,0 +1,109 @@
+import React, { useState, useEffect } from 'react'
+import { Form, Button, Select, message } from 'antd'
+import {get} from 'lodash'
+import {EXAM_SITE_API , EXAM_NUMBER_API} from '../../apis'
+import fetch from '@/services/axios'
+import './index.less'
+const {Option} = Select
+const FormItem = Form.Item
+
+
+const Label = ({ title, children }) => (
+  <FormItem className="examineeCheck-page-search-label">
+    <label className="examineeCheck-page-search-label-item">{title}：</label>
+    <span className="examineeCheck-page-search-label-span">{children}</span>
+  </FormItem>
+)
+const optionValue = [
+  { name: '全部', value: ''},
+  { name: '验证成功', value: 'pass'},
+  { name: '验证失败', value: 'reject'}]
+  
+const Search = props => {
+  const {onHandleSearch} = props
+  const { validateFields, resetFields, getFieldDecorator } = props.form
+  const [siteData, setSiteData ] = useState([])
+  const [numberData, setNumberData] = useState([])
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    validateFields((err, values) => {
+      if(!err) {
+        let {examNumberId} = values
+        !!examNumberId ?  onHandleSearch(values) : message.error('请选择考场！')
+      }
+    })
+  }
+
+  const reset = () => {
+    resetFields(['siteData', 'examNumberId', 'passResult']);
+    setNumberData([])
+    onHandleSearch({ siteId: '', examNumberId: '', passResult: '' })
+  }
+
+  useEffect(() => {
+    fetch.post(EXAM_SITE_API).then(res => {
+      if(get(res, 'state') === 10000) {
+        
+        setSiteData(get(res, 'data'))
+      }
+    })
+  }, [])
+  
+  const handleChange = siteId => {
+    fetch.post(EXAM_NUMBER_API, {siteId}).then(res => {
+      if(get(res, 'state') === 10000) {
+        const data = get(res, 'data') || []
+        resetFields(['examNumberId']);
+        setNumberData(data)
+      }
+    })
+  }
+
+  return (
+    <>
+      <Form className="examineeCheck-page-search" onSubmit={handleSubmit}>
+        <section className="examineeCheck-page-search-list">
+          {/* {console.log(siteData)} */}
+          <Label title="考点">{
+            getFieldDecorator('siteData', { initialValue: '' })(
+              <Select  onChange={handleChange}>{
+                !!siteData&&siteData.map(({siteId, siteName}) => (
+                <Option value={siteId} key={siteId}>{siteName}</Option>)
+                )}
+              </Select>
+            )}</Label>
+          <Label title="考场">
+         {getFieldDecorator('examNumberId', {initialValue: ''})(
+            <Select disabled={!numberData.length}>{
+              !!numberData.length&&numberData.map(item => (
+              <Option value={item.examNumberId} key={item.examNumberId}>{item.name}</Option>)
+              )}
+            </Select>
+         )}
+          </Label>
+          <Label title="验证结果">
+            {getFieldDecorator('passResult', {initialValue: ''})(
+              <Select>{
+              !!optionValue&&optionValue.map(({value, name}) => (
+              <Option value={value} key={value}>{name}</Option>)
+              )}
+            </Select>
+            )}
+          </Label>
+        </section>
+      <section className="examineeCheck-page-search-buttons">
+        <Button type="primary" htmlType="submit">查询</Button>
+        <Button type="danger" onClick={reset}>
+            重置
+          </Button>
+      </section>
+      </Form>
+    </>
+  )
+
+}
+
+
+
+export default Form.create()(Search)

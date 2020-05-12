@@ -1,0 +1,149 @@
+{
+  "id": "1593301",
+  "name": "考试院",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "13528485",
+      "name": "考生管理",
+      "font_class": "kaoshengguanli",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "13528486",
+      "name": "通行记录",
+      "font_class": "tonghangjilu",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "13528487",
+      "name": "设备管理",
+      "font_class": "shebeiguanli1",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "13528488",
+      "name": "考务设置",
+      "font_class": "kaowushezhi",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "13528489",
+      "name": "核查建库",
+      "font_class": "hechajianku",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "13528490",
+      "name": "考生核验",
+      "font_class": "kaoshengheyan",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "6967359",
+      "name": "人脸核验",
+      "font_class": "renlianheyan",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "7810359",
+      "name": "新建库",
+      "font_class": "xinjianku",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
+      "icon_id": "12703431",
+      "name": "访客管理-normal",
+      "font_class": "fangkeguanli",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "12703432",
+      "name": "视频监控-normal",
+      "font_class": "shipinjiankong",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "12703438",
+      "name": "通行考勤-normal",
+      "font_class": "tonghangkaoqin",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "12703466",
+      "name": "系统设置-normal",
+      "font_class": "xitongshezhi",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "12703468",
+      "name": "员工管理-normal",
+      "font_class": "yuangongguanli",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "933004",
+      "name": "教室",
+      "font_class": "kaoshi",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "1511149",
+      "name": "考务",
+      "font_class": "kaowu",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "1883889",
+      "name": "考场",
+      "font_class": "kaochang",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "6673549",
+      "name": "设备管理",
+      "font_class": "shebeiguanli",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "7234981",
+      "name": "人员管理",
+      "font_class": "renyuanguanli",
+      "unicode": "e712",
+      "unicode_decimal": 59154
+    },
+    {
+      "icon_id": "7460870",
+      "name": "考点",
+      "font_class": "kaodian",
+      "unicode": "e673",
+      "unicode_decimal": 58995
+    },
+    {
+      "icon_id": "10822501",
+      "name": "通行管理",
+      "font_class": "tongxingguanli",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    }
+  ]
+}
