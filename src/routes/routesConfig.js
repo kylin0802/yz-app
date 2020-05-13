@@ -31,8 +31,7 @@ const routesConfig = [
       title: '我的'
     },
     icon: 'anticon-kaoshengguanli'
-  }
-  
+  }, 
 ];
 
 export default routesConfig;
