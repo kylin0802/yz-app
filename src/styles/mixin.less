@@ -13,3 +13,16 @@
     zoom: 1;
   }
 }
+.function {
+  .px2rem(@px, @base-font-size: 100px) {
+    return: (@px / @base-font-size) * 1rem
+  }
+}
+
+
+.rem(@name,@px, @default-size: 100px){
+  @{name} : unit(@px / @default-size,rem);
+}
+
+
+

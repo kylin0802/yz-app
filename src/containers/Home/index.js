@@ -30,7 +30,6 @@ const Nav = (props) => {
   </div>
 )};
 function Home(props) {
-
   return (
     <React.Fragment>
       <section className="home-page-carousel-wrapper">
