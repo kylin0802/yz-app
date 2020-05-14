@@ -2,11 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+    <meta http-equiv="="X-UA-Compatible" content="ie=edge">
+    <meta name="format-detection" content="email=no" />
+
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <title>React TEST</title>
+    <title>App</title>
+    <script>
+      (function () { // 初始化rem
+        var  w = 720;
+        var  setFontSize = function () {
+          var  width = document.documentElement.clientWidth;
+          width = width > w ? w : width
+          var fontSize = parseInt(width / w * 200)
+          document.getElementsByTagName("html")[0].style.fontSize = fontSize + 'px'
+        }
+        setFontSize()
+        window.onresize = setFontSize
+        // console.log('尺寸', document.documentElement.clientWidth,  document.getElementsByTagName("html")[0].style.fontSize)
+      })()
+    </script>
   </head>
+  
   <body>
     <div id="app"></div>
   </body>

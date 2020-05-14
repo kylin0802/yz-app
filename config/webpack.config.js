@@ -30,6 +30,7 @@ const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const lessTheme = require('./theme')
 const postcssNormalize = require('postcss-normalize');
 
+
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
@@ -460,10 +461,14 @@ module.exports = function (webpackEnv) {
             {
               test: lessRegex,
               exclude: lessModuleRegex,
-              use: getStyleLoaders({
+              use: getStyleLoaders(
+                {
                 importLoaders: 2,
+           
                 sourceMap: isEnvProduction && shouldUseSourceMap,
-              }, 'less-loader', lessTheme),
+                }, 
+              'less-loader',
+               lessTheme),
             },
             {
               test: lessModuleRegex,

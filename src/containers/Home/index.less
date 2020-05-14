@@ -1,8 +1,12 @@
+
+
+@import '../../styles/mixin.less';
+
 .home-page {
-    margin: 0 15px;
+    margin: 0 px2rem(15px);
   
   &-tag {
-      padding: 0.4rem;
+      padding: px2rem(10px);
       &-wrapper{
           width: 100%;
       }
@@ -14,20 +18,20 @@
     // justify-content: space-between;
     &-item{
             display: flex;
-            width: 5rem;
+            width:px2rem(60px);
             // height: 5rem;
             display: flex;
             flex-direction: column;
-            margin:  0.8rem 0  0.4rem 0.4rem;
+            margin:  px2rem(20px) 0   px2rem(20px) px2rem(20px);
             &-icon {
-                width: 3.5rem;
-                height: 3.5rem;
-                line-height: 3.5rem;
+                width: px2rem(50px);
+                height: px2rem(50px);
+                line-height: px2rem(50px);
                 text-align: center;
                 display: inline-block;
-                border-radius: 3.5rem;
+                border-radius: px2rem(50px);
                 background: lightblue;
-                margin-bottom:0.8rem ;
+                margin-bottom:px2rem(10px) ;
             } 
     }
   }
