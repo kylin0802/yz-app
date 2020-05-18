@@ -4,11 +4,22 @@
 
 .home-page {
     margin: 0 px2rem(15px);
-  
+    &-title{
+      font-size: px2rem(22px);
+      padding:px2rem(10px) px2rem(30px) ;
+      display: block;
+      background: #fff;
+    }
   &-tag {
-      padding: px2rem(10px);
+  
       &-wrapper{
-          width: 100%;
+          padding: px2rem(10px) px2rem(20px);
+          background: #fff;
+      }
+      &-title{
+        font-size: px2rem(16px);
+        border-left:px2rem(4px) solid #2D3640 ;
+        padding:  0 px2rem(8px) ;
       }
     // width: 80px!important;
     // width: 20rem;
@@ -21,18 +32,56 @@
             width:px2rem(60px);
             // height: 5rem;
             display: flex;
+            font-size: px2rem(12px);
             flex-direction: column;
-            margin:  px2rem(20px) 0   px2rem(20px) px2rem(20px);
+            color: #323334;
+            margin: px2rem(6px) px2rem(10px);
             &-icon {
-                width: px2rem(50px);
-                height: px2rem(50px);
-                line-height: px2rem(50px);
+                width: px2rem(40px);
+                height: px2rem(40px);
+                line-height: px2rem(40px);
                 text-align: center;
+                margin: px2rem(10px) 0;
                 display: inline-block;
-                border-radius: px2rem(50px);
+                // border-radius: px2rem(50px);
                 background: lightblue;
                 margin-bottom:px2rem(10px) ;
             } 
+    }
+  }
+  &-news{
+    margin: px2rem(6px) 0;
+    line-height: px2rem(32px);
+    color: #B6B9BF;
+    font-size: px2rem(12px) !important;
+    padding: 0 px2rem(20px);
+    span{
+      padding:  0 px2rem(12px) 0 0;
+    }
+    .am-icon {
+      font-size: px2rem(12px) !important;
+      
+    }
+    background: #fff;
+  }
+  &-list{
+    padding: px2rem(16px) px2rem(20px) 0  px2rem(20px);
+     background:  #fff;
+    &-title{
+      font-size: px2rem(16px);
+      border-left:px2rem(4px) solid #2D3640 ;
+      padding:  0 px2rem(8px) ;
+    }
+    &-item{
+      margin: px2rem(10px) px2rem(33px);
+      &-wrapper{
+        display: flex;
+      }
+      font-size: px2rem(14px);
+      &-title{
+        color: #CED2D9;
+        padding: px2rem(12px);
+      }
     }
   }
 }
