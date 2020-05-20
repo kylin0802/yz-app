@@ -1,89 +1,129 @@
-
-
 @import '../../styles/mixin.less';
 
+.bacSize () {
+  display: block;
+  width: px2rem(40px);
+  height: px2rem(40px);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: px2rem(40px) px2rem(40px);
+}
 .home-page {
-    margin: 0 px2rem(15px);
-    &-title{
-      font-size: px2rem(22px);
-      padding:px2rem(10px) px2rem(30px) ;
-      display: block;
+  margin: 0 px2rem(15px);
+  &-title {
+    font-size: px2rem(22px);
+    padding: px2rem(10px) px2rem(30px);
+    display: block;
+    background: #fff;
+  }
+  &-tag {
+    &-wrapper {
+      padding: px2rem(10px) px2rem(20px);
       background: #fff;
     }
-  &-tag {
-  
-      &-wrapper{
-          padding: px2rem(10px) px2rem(20px);
-          background: #fff;
-      }
-      &-title{
-        font-size: px2rem(16px);
-        border-left:px2rem(4px) solid #2D3640 ;
-        padding:  0 px2rem(8px) ;
-      }
+    &-title {
+      font-size: px2rem(16px);
+      border-left: px2rem(4px) solid #2d3640;
+      padding: 0 px2rem(8px);
+    }
     // width: 80px!important;
     // width: 20rem;
     // margin: 9px 9px 9px 0;
     display: flex;
     flex-wrap: wrap;
     // justify-content: space-between;
-    &-item{
-            display: flex;
-            width:px2rem(60px);
-            // height: 5rem;
-            display: flex;
-            font-size: px2rem(12px);
-            flex-direction: column;
-            color: #323334;
-            margin: px2rem(6px) px2rem(10px);
-            &-icon {
-                width: px2rem(40px);
-                height: px2rem(40px);
-                line-height: px2rem(40px);
-                text-align: center;
-                margin: px2rem(10px) 0;
-                display: inline-block;
-                // border-radius: px2rem(50px);
-                background: lightblue;
-                margin-bottom:px2rem(10px) ;
-            } 
+    &-item {
+      display: flex;
+      width: px2rem(60px);
+      // height: 5rem;
+      display: flex;
+      font-size: px2rem(12px);
+      flex-direction: column;
+      color: #323334;
+      margin: px2rem(6px) px2rem(10px);
+      &-icon {
+        width: px2rem(40px);
+        height: px2rem(40px);
+        line-height: px2rem(40px);
+        text-align: center;
+        margin: px2rem(10px) 0;
+        display: inline-block;
+        // border-radius: px2rem(50px);
+        margin-bottom: px2rem(10px);
+      }
+      }
+      .icon-car {
+        background: url('../../images/icon-car.png');
+        .bacSize()
     }
+    .icon-user {
+      background: url('../../images/icon-user.png');
+      .bacSize()
   }
-  &-news{
+  .icon-door {
+    background: url('../../images/icon-door.png');
+    .bacSize()
+}
+.icon-open {
+  background: url('../../images/icon-open.png');
+  .bacSize()
+}
+.icon-search {
+  background: url('../../images/icon-search.png');
+  .bacSize()
+}
+.icon-loginout{
+  background: url('../../images/icon-loginout.png');
+  .bacSize()
+}
+
+
+
+  }
+
+  &-news {
     margin: px2rem(6px) 0;
     line-height: px2rem(32px);
-    color: #B6B9BF;
+    color: #b6b9bf;
     font-size: px2rem(12px) !important;
     padding: 0 px2rem(20px);
-    span{
-      padding:  0 px2rem(12px) 0 0;
+    span {
+      padding: 0 px2rem(12px) 0 0;
     }
     .am-icon {
       font-size: px2rem(12px) !important;
-      
     }
     background: #fff;
   }
-  &-list{
-    padding: px2rem(16px) px2rem(20px) 0  px2rem(20px);
-     background:  #fff;
-    &-title{
+  &-list {
+    padding: px2rem(16px) px2rem(20px) 0 px2rem(20px);
+    background: #fff;
+    &-title {
       font-size: px2rem(16px);
-      border-left:px2rem(4px) solid #2D3640 ;
-      padding:  0 px2rem(8px) ;
+      border-left: px2rem(4px) solid #2d3640;
+      padding: 0 px2rem(8px);
     }
-    &-item{
+    &-item {
       margin: px2rem(10px) px2rem(33px);
-      &-wrapper{
+      &-wrapper {
         display: flex;
       }
       font-size: px2rem(14px);
-      &-title{
-        color: #CED2D9;
+      &-title {
+        color: #ced2d9;
         padding: px2rem(12px);
       }
     }
   }
 }
 
+.icon-voice{
+  background: url('../../images/icon-voice.png');
+  width: px2rem(12px);
+  height: px2rem(12px);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: px2rem(12px) px2rem(12px);
+  margin-right: px2rem(5px);
  
+}

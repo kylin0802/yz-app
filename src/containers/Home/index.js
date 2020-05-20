@@ -1,18 +1,34 @@
 import React from 'react';
 import Carousel from './components/Carousel';
-import { Flex, WhiteSpace, Icon } from 'antd-mobile';
+import { Icon } from 'antd-mobile';
+import fetch from '@/services/axios';
+import './index.less'
+const OPEN_URL = '/yzSmartGate/communityAppServer/openDoor'
 
-import './index.less';
+
 const PlaceHolder = (props) => {
-    const {title, url} = props
+    const {title, url, icon, api} = props
     const handleLink = (url) => {
-        console.log("傻逼")
+      if(!!api) {
+        fetch(api, {
+          "deviceId": "18937fc30067",
+          "personId": "3123123",
+          "personName": "personName001",
+          "houseId": "H101101",
+          "areaId": "004"
+        }).then(res => {
+          console.log(res)
+        })
+      } else{
         props.history.push(url)
+
+      }
     }
    return (
   <div className="home-page-tag-item">
-    <span className="home-page-tag-item-icon" onClick={()=> handleLink(url)}>
-    <Icon type="check" />
+    <span className="home-page-tag-item-icon" onClick={(e)=> handleLink(url)}>
+    {/* <Icon type="check" /> */}
+    <span className={icon}></span>
     </span>
     <span className="home-page-tag-item-title">{title}</span>
   </div>
@@ -21,12 +37,12 @@ const Nav = (props) => {
 
     return (
   <div className="home-page-tag">
-    <PlaceHolder title="手机开门" {...props} url="/user/addUser" />
-    <PlaceHolder title="一键进小区" {...props} />
-    <PlaceHolder title="信息注册" {...props}/>
-    <PlaceHolder title="车辆信息" {...props}/>
-    <PlaceHolder title="家庭成员" {...props}/>
-    <PlaceHolder title="记录查询" {...props} />
+      <PlaceHolder title="手机开门" {...props}  icon="icon-door" api ={OPEN_URL} />
+    <PlaceHolder title="一键进小区" {...props} icon="icon-open"  />
+    <PlaceHolder title="信息注册" {...props} icon="icon-loginout"/>
+    <PlaceHolder title="车辆信息" {...props} icon="icon-car"/>
+    <PlaceHolder title="家庭成员" {...props} icon="icon-user"/>
+    <PlaceHolder title="记录查询" {...props} url="/user/record" icon="icon-search" />
   </div>
 )};
 function Home(props) {
@@ -42,7 +58,7 @@ function Home(props) {
         <h5 className="home-page-tag-title">通行统计</h5>
         <Nav {...props}/>
       </section>
-    <section className="home-page-news"><span><Icon type="exclamation-circle" /></span>名人苑智能家全面上线...</section>
+    <section className="home-page-news"><span className="icon-voice" ></span>名人苑智能家全面上线...</section>
     <section className="home-page-list">
       <h5 className="home-page-list-title">今日报警</h5>
       <div className="home-page-list-item-wrapper">

@@ -14,7 +14,6 @@ const getActiveKey = (path, level = 1, defaultKey = '') => {
 function Menu(props) {
   const selectedMenu = getActiveKey(window.location.hash);
   const MenuItemStyles = menu =>  classNames(Styles.MenuItem, {[Styles.Active]: selectedMenu === menu.key})
-  
   return (
     <section className={Styles.Wrapper}>
       {routesConfig.map(menu => {
