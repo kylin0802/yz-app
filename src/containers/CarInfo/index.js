@@ -6,10 +6,10 @@ import './index.less';
 const CarInfo = () => {
   return (
     <section className="cardInfo-page">
-      <section className="cardInfo-page-header">
-        <section className="cardInfo-page-header-icon">{/* <Icon type="left" size="lg"/>  */}</section>
+      {/* <section className="cardInfo-page-header">
+        <section className="cardInfo-page-header-icon"></section>
         车辆添加
-      </section>
+      </section> */}
       <section className="cardInfo-page-content">
         <section className="cardInfo-page-content-text">完善基本信息</section>
         {/* <WingBlank>           */}
