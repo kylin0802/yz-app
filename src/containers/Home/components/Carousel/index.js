@@ -3,11 +3,12 @@ import {Carousel} from 'antd-mobile'
 import A from './images/4.jpg'
 import B from './images/5.jpg'
 import C from './images/6.jpg'
+import './index.less'
 
 const adverArr =  [A, B, C]
 function CarouselIndex() {
     return (
-        <div>
+        <div className="home-page-carousel">
                <Carousel
                 autoplay={false}
                 infinite
