@@ -21,7 +21,6 @@ const PlaceHolder = (props) => {
         })
       } else{
         props.history.push(url)
-
       }
     }
    return (
