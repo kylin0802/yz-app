@@ -8,6 +8,8 @@ const OPEN_URL = '/yzSmartGate/communityAppServer/openDoor'
 
 const PlaceHolder = (props) => {
     const {title, url, icon, api} = props
+
+  
     const handleLink = (url) => {
       if(!!api) {
         fetch(api, {
@@ -20,7 +22,16 @@ const PlaceHolder = (props) => {
           console.log(res)
         })
       } else{
-        props.history.push(url)
+        try {
+          alert(3333)
+          window.jsInterface.jump(url)
+
+        } catch(err) {
+          // test.hello("错误");
+          window.jsInterface.jump(url)
+        }
+      
+        // props.history.push(url)
       }
     }
    return (
