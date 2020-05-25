@@ -38,7 +38,7 @@ function AddUser(props) {
     try {
       console.log('调取摄像头');
 
-      window.takePhoto.takeFromJs();
+      window.takePhoto.takeFromJs(); // 前端调取摄像头
       // console.log(window.takePhoto.takeFromJs())
     } catch (err) {
       console.log('调用摄像头错误', f);
@@ -51,7 +51,7 @@ function AddUser(props) {
   useEffect(() => {
     try {
       console.log('现在已经绑定 appTakePhoto');
-      window.appTakePhoto = appTakePhoto;
+      window.appTakePhoto = appTakePhoto; // 全局钩子，作用： 促使安卓调用
     } catch (err) {
       console.log('绑定报错');
     }
@@ -70,7 +70,7 @@ function AddUser(props) {
       });
   }, []);
 
-  const appTakePhoto = res => {
+  const appTakePhoto = res => { // 安卓调用前端方法，传base64
     // console.log(111)
     try {
       console.log(typeof res);
