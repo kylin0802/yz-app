@@ -1,35 +1,47 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Carousel from './components/Carousel';
-import { Icon } from 'antd-mobile';
+import { Icon, Modal } from 'antd-mobile';
 import fetch from '@/services/axios';
 import './index.less';
 const OPEN_URL = '/yzSmartGate/communityAppServer/openDoor';
 
+// window.updateValue = function(url) {
+//   console.log(url);
+//   if(window.callback !== undefined) {
+//     console.log(1111)
+//       window.callback.updateValue(url);
+//   }
+// };
+const operation = Modal.operation;
+
 const PlaceHolder = props => {
   const { title, url, icon, api } = props;
+
   const handleLink = url => {
-    if (!!api) {
-      fetch
-        .post(api, {
-          deviceId: '18937fc30067',
-          personId: '3123123',
-          personName: 'personName001',
-          houseId: 'H101101',
-          areaId: '004'
-        })
-        .then(res => {
-          console.log(res);
-        });
-    } else {
-      try {
-        window.jsInterface.jump(url);
-      } catch (err) {
-        props.history.push('/' + url);
-        // alert(err)
-        // test.hello("错误");
-        // window.jsInterface.jump(url);
-      }
+    // if (!!api) {
+
+    // } else {
+    try {
+      window.jsInterface.jump(url);
+    } catch (err) {
+      props.history.push(url);
     }
+
+    // }
+  };
+  const opendoor = () => {
+    console.log('----------');
+    fetch
+      .post(api, {
+        deviceId: '18937fc30067',
+        personId: '3123123',
+        personName: 'personName001',
+        houseId: 'H101101',
+        areaId: '004'
+      })
+      .then(res => {
+        console.log(res);
+      });
   };
   useEffect(() => {
     try {
@@ -41,7 +53,17 @@ const PlaceHolder = props => {
 
   return (
     <div className="home-page-tag-item">
-      <span className="home-page-tag-item-icon" onClick={e => handleLink(url)}>
+      <span
+        className="home-page-tag-item-icon"
+        onClick={
+          title === '手机开门'
+            ? () =>
+                operation([
+                  { text: '一号门', onPress: opendoor }
+                  // { text: '二号门', onPress: () => console.log('置顶聊天被点击了') },
+                ])
+            : e => handleLink(url)
+        }>
         {/* <Icon type="check" /> */}
         <span className={icon}></span>
       </span>
@@ -50,14 +72,32 @@ const PlaceHolder = props => {
   );
 };
 const Nav = props => {
+  const [userInfo, setUserInfo] = useState('');
+
+  useEffect(() => {
+    try {
+      setUserInfo('我调取1' + window.jsInterface.getUserInfo());
+      window.updateValue = updateValue;
+    } catch (err) {
+      window.updateValue = updateValue;
+    }
+  }, []);
+
+  const updateValue = res => {
+    alert(33333);
+    console.log(res);
+  };
+
   return (
     <div className="home-page-tag">
       <PlaceHolder title="手机开门" {...props} icon="icon-door" api={OPEN_URL} />
       <PlaceHolder title="一键进小区" {...props} icon="icon-open" />
-      <PlaceHolder title="信息注册" {...props} icon="icon-loginout" />
-      <PlaceHolder title="车辆信息" {...props} url="user/CarInfo" icon="icon-car" />
-      <PlaceHolder title="添加成员" {...props} url="user/AddFamily" icon="icon-user" />
-      <PlaceHolder title="记录查询" {...props} url="user/record" icon="icon-search" />
+      <PlaceHolder title="信息注册" {...props} icon="icon-loginout" url="/user/addUser" />
+      <PlaceHolder title="车辆信息" {...props} url="/user/CarInfo" icon="icon-car" />
+      <PlaceHolder title="添加成员" {...props} url="/user/AddFamily" icon="icon-user" />
+      <PlaceHolder title="记录查询" {...props} url="/user/record" icon="icon-search" />
+      <hr />
+      {/* 测试 ------- {userInfo} */}
     </div>
   );
 };

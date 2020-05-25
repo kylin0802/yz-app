@@ -15,23 +15,32 @@ function Nav(props) {
   const [navList, setNavList] = useState([
     {
       title: '今天',
-      isActive: true
+      isActive: true,
+      key: 'day'
     },
     {
       title: '近一周',
-      isActive: false
+      isActive: false,
+      key: 'week'
     },
     {
       title: '近一个月',
-      isActive: false
+      isActive: false,
+      key: 'month'
     }
   ]);
   const handleClick = e => {
-    const data = navList.map(({ title, isActive }, index) => ({
+    const data = navList.map(({ title, isActive, key }, index) => ({
       isActive: e === index,
-      title
+      title,
+      key
     }));
     setNavList(data);
+    const params = data.filter(({ isActive }) => {
+      return isActive;
+    })[0].key;
+    // console.log(params)
+    props.onSubmit(params);
   };
   return (
     <Flex>
