@@ -3,6 +3,7 @@ import Carousel from './components/Carousel';
 import { Icon } from 'antd-mobile';
 import fetch from '@/services/axios';
 import './index.less';
+import { typeOf } from 'plupload';
 const OPEN_URL = '/yzSmartGate/communityAppServer/openDoor';
 
 
@@ -54,18 +55,25 @@ const Nav = props => {
   const [ userInfo, setUserInfo] =useState('')
  
   useEffect(() => {
+    let initUser = null
     try{
-      setUserInfo('我调取1' + window.jsInterface.getUserInfo())
-      window.updateValue= updateValue
+      setUserInfo('我调取1' + window.jsInterface.getUserInfo()) // 获取初始化数据
+      initUser = window.jsInterface.getUserInfo()
+      console.log('安卓获取', initUser)
     }catch (err) {
-      window.updateValue= updateValue
+      const data = {
+        "password":"password003",
+        "personId":"Pa5ec091ab78e4c22a46a28eeea891851",
+        "userName":"1356669999",
+        "status": "localhost"
+      }
+      initUser = JSON.stringify(data)
+      console.log('本地', initUser)
     }
+    sessionStorage.setItem("userInfo", initUser)
   }, []);
 
- const updateValue =(res) =>{
-   alert(33333)
-  console.log(res)
-}
+
 
   return (
     <div className="home-page-tag">
