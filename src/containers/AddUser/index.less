@@ -1,0 +1,42 @@
+
+
+@import '../../styles/mixin.less';
+
+.user-page {
+  &-title {
+    padding: px2rem(10px);
+    font-size: px2rem(14px);
+    color: #98999a;
+  }
+  &-upload {
+    margin-top: px2rem(12px);
+    padding: px2rem(20px);
+    height: px2rem(150px);
+    background: #fff;
+    &-title {
+      font-size: px2rem(14px);
+      color: #323334;
+      span:nth-child(2) {
+        color: #017cff;
+      }
+    }
+    &-content {
+      display: flex;
+      justify-content: center;
+      .am-image-picker {
+        width: px2rem(120px);
+        height: px2rem(120px);
+      }
+      img{
+          width: px2rem(100px);
+          height: px2rem(100px);
+          border: 1px solid #ddd;
+      }
+    }
+  }
+}
+
+.inline {
+  width: px2rem(80px) !important;
+  margin: 9px 9px 9px 0;
+}
