@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import './index.less';
-import { List, InputItem, Button, WhiteSpace, WingBlank, Picker, Flex, ImagePicker } from 'antd-mobile';
+import { List, InputItem, Button, WhiteSpace, WingBlank, Picker, Flex, Icon, Toast } from 'antd-mobile';
 import { createForm } from 'rc-form';
 import { ADDCAR_API, GETCARtYPE_API, DELETE_API, CARINFO_API } from './api/index';
 import fetch from '@/services/axios';
+import { get } from 'lodash';
 
 const CarInfo = props => {
   const A = 'data:image/jpeg;base64,';
   const [owerCar, setOwnercar] = useState('');
   const [cartype, setCartype] = useState([]); //车辆类型
-  const [files, setfiles] = useState([]); //上传照片
-  const [multiple, setmultiple] = useState(false); //是否多选
   const { validateFields, getFieldProps, resetFields } = props.form;
   const [photo, setPhoto] = useState('');
+  const [initUser, setInitUser] = useState({}); //默认值
 
   const onChangeImg = f => {
     try {
@@ -27,10 +27,10 @@ const CarInfo = props => {
     // console.log(files, type, index);
     // setFiles(files);
   };
-  const getOwnerCar = () => {
+  const getOwnerCar = initUser => {
     //获取本人的照片
-    fetch.post(CARINFO_API, { personId: 'Pa5ec091ab78e4c22a46a28eeea891851' }).then(res => {
-      console.log('本人的车辆信息', res.data.vehicle[0]);
+    fetch.post(CARINFO_API, { personId: initUser.personId }).then(res => {
+      // console.log('本人的车辆信息', res.data.vehicle[0]);
       setOwnercar(res.data.vehicle[0] || {});
     });
   };
@@ -47,14 +47,24 @@ const CarInfo = props => {
   };
 
   useEffect(() => {
+    let initUser = null;
     try {
       console.log('现在已经绑定 appTakePhoto');
       window.appTakePhoto = appTakePhoto; // 全局钩子，作用： 促使安卓调用
+      initUser = JSON.parse(window.jsInterface.getUserInfo());
+      console.log('安卓获取', initUser);
     } catch (err) {
       console.log('绑定报错');
+      initUser = {
+        password: 'password003',
+        personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
+        userName: '1356669999',
+        status: 'localhost'
+      };
     }
+    setInitUser(initUser);
     getCarType(); //获取车辆的类型
-    getOwnerCar(); //获取本人的信息
+    getOwnerCar(initUser); //获取本人的信息
   }, []);
   const appTakePhoto = res => {
     // 安卓调用前端方法，传base64
@@ -72,9 +82,10 @@ const CarInfo = props => {
 
   const onSubmite = () => {
     //添加车辆
+
     validateFields((err, values) => {
       let param = {
-        personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
+        personId: initUser.personId,
         vehicle: {
           plateNumber: values.plateNumber,
           brand: values.brand,
@@ -88,8 +99,31 @@ const CarInfo = props => {
       console.log('param', param);
       fetch.post(ADDCAR_API, param).then(res => {
         console.log('添加', res);
+        if (get(res, 'state') === 10000) {
+          Toast.success(res.message);
+        }
+      });
+      // resetFields();
+    });
+  };
+  const onDelete = () => {
+    //删除设备
+    validateFields((err, values) => {
+      let param = {
+        personId: initUser.personId,
+        vehicle: {
+          plateNumber: values.plateNumber
+        }
+      };
+      console.log('param', param);
+      fetch.post(DELETE_API, param).then(res => {
+        console.log('删除', res);
+        if (get(res, 'state') === 10000) {
+          Toast.success(res.message);
+        }
       });
       resetFields();
+      getOwnerCar(initUser); //获取本人的信息
     });
   };
   return (
@@ -130,7 +164,8 @@ const CarInfo = props => {
               // {initialValue: owerCar.type}
             )}
             className="forss"
-            value={[owerCar.type]}>
+            // value={[owerCar.type]}
+          >
             <List.Item arrow="horizontal">车辆类型</List.Item>
           </Picker>
           <WhiteSpace />
@@ -151,12 +186,19 @@ const CarInfo = props => {
           </span>
         </Flex>
         <div className="user-page-upload-content">
-          {/* <img src={img} alt="照片"/> */}
-          <img src={photo} alt="照片" />
+          {/* <img src={photo} /> */}
+          {!!owerCar.vehiclePhoto ? (
+            <img src={photo || owerCar.vehiclePhoto} alt="照片" onClick={onChangeImg} />
+          ) : (
+            <Icon type="plus" />
+          )}
         </div>
         <WingBlank>
           <Button type="primary" style={{ marginTop: '75px' }} onClick={onSubmite}>
             完成
+          </Button>
+          <Button type="danger" style={{ marginTop: '5px' }} onClick={onDelete}>
+            删除
           </Button>
         </WingBlank>
       </section>

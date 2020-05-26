@@ -7,8 +7,10 @@ const Item = List.Item;
 function User() {
   const [perInfo, setPerInfo] = useState([]); //获取居民
   const [comUrl, setComUrl] = useState('');
-  const getPerInfo = () => {
-    fetch.post(GET_PERSON_INFO, { personId: 'Pa5ec091ab78e4c22a46a28eeea891851' }).then(res => {
+  const [initUser, setInitUser] = useState({});
+
+  const getPerInfo = initUser => {
+    fetch.post(GET_PERSON_INFO, { personId: initUser.personId }).then(res => {
       // console.log('本人信息',res.data)
       setPerInfo(res.data);
     });
@@ -20,7 +22,20 @@ function User() {
     });
   };
   useEffect(() => {
-    getPerInfo();
+    let initUser = null;
+    try {
+      initUser = JSON.parse(window.jsInterface.getUserInfo());
+      console.log('安卓获取', initUser);
+    } catch (err) {
+      initUser = {
+        password: 'password003',
+        personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
+        userName: '1356669999',
+        status: 'localhost'
+      };
+    }
+    setInitUser(initUser);
+    getPerInfo(initUser);
     getComUrl();
   }, []);
   return (

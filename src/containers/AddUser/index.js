@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { List, InputItem, Picker, Flex, WingBlank, Button, ImagePicker, message } from 'antd-mobile';
+import { List, InputItem, Picker, Flex, WingBlank, Button, Toast, Icon } from 'antd-mobile';
 import { createForm } from 'rc-form';
 import './index.less';
 import fetch from '@/services/axios';
 import { get } from 'lodash';
-import noPhoto from './bg-add.jpg';
-import { typeOf } from 'plupload';
 
-// import arrayTreeFilter from 'array-tree-filter';
-
-// import { district, provinceLite } from 'antd-mobile-demo-data';
 const GET_USER_INFO_API = '/yzSmartGate/communityAppServer/getPersonSelf';
 const DEITOR_USER_API = '/yzSmartGate/communityAppServer/modifyPerson';
-
+// const userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
 const option = [
   [
     {
@@ -29,15 +24,13 @@ const option = [
 function AddUser(props) {
   const A = 'data:image/jpeg;base64,';
   const { getFieldProps } = props.form;
-  const [files, setFiles] = useState([]);
   const [user, setUser] = useState({});
-  const [multiple, setMultiple] = useState(false);
+  const [initUser, setInitUser] = useState({});
   const [selectValue, setSelectValue] = useState(false);
   const [photo, setPhoto] = useState('');
   const onChangeImg = f => {
     try {
       console.log('调取摄像头');
-
       window.takePhoto.takeFromJs(); // 前端调取摄像头
       // console.log(window.takePhoto.takeFromJs())
     } catch (err) {
@@ -49,15 +42,25 @@ function AddUser(props) {
   };
 
   useEffect(() => {
+    let initUser = null;
     try {
       console.log('现在已经绑定 appTakePhoto');
       window.appTakePhoto = appTakePhoto; // 全局钩子，作用： 促使安卓调用
+      initUser = JSON.parse(window.jsInterface.getUserInfo());
+      console.log('安卓获取', initUser);
     } catch (err) {
-      console.log('绑定报错');
+      initUser = {
+        password: 'password003',
+        personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
+        userName: '1356669999',
+        status: 'localhost'
+      };
     }
+    setInitUser(initUser);
+
     fetch
       .post(GET_USER_INFO_API, {
-        personId: 'Pa5ec091ab78e4c22a46a28eeea891851'
+        personId: initUser.personId
       })
       .then(res => {
         console.log(res);
@@ -87,24 +90,24 @@ function AddUser(props) {
         console.log('测试', props.form.getFieldsValue());
         let val = {
           ...props.form.getFieldsValue(),
-          areaId: '004',
-          houseId: 'H101101',
-          personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
-          identity: 31231231123123123,
+          areaId: user.areaId || '',
+          houseId: user.houseId || '',
+          personId: initUser.personId,
           facePhoto: photo,
           personType: selectValue
         };
         console.log(val);
         fetch.post(DEITOR_USER_API, val).then(res => {
           console.log(res);
+          if (get(res, 'state') === 10000) {
+            Toast.success(res.message);
+          }
         });
       } else {
         alert('Validation failed');
       }
     });
   };
-
-  // const img =   ! photo ? photo : !!user.facePhotoPath ? user.facePhotoPath : noPhoto
 
   return (
     <div className="user-page">
@@ -140,26 +143,23 @@ function AddUser(props) {
       </section>
       <section className="user-page-upload">
         <Flex justify="between" className="user-page-upload-title">
-          <span className="inline"> 上传照片</span>
+          <span className="inline">上传照片</span>
           <span className="inline" onClick={onChangeImg}>
-            {' '}
             选择图片
           </span>
         </Flex>
         <div className="user-page-upload-content">
           {/* <img src={img} alt="照片"/> */}
-          <img src={photo} alt="照片" />
-          {/* <ImagePicker
-          files={files}
-          onClick={onChangeImg}
-          onImageClick={(index, fs) => console.log(index, fs)}
-          selectable={files.length < 1}
-          multiple={false}
-          length={1}
-        /> */}
+          <div className="user-page-image">
+            {!!user.facePhotoPath ? (
+              <img src={photo || user.facePhotoPath} alt="照片" onClick={onChangeImg} />
+            ) : (
+              <Icon type="plus" />
+            )}
+          </div>
         </div>
         <WingBlank>
-          <Button type="primary" className="user-page-button" style={{ margin: '50px' }} onClick={handleSubmit}>
+          <Button type="primary" className="user-page-button" style={{ margin: '50px 0' }} onClick={handleSubmit}>
             保 存
           </Button>
         </WingBlank>
