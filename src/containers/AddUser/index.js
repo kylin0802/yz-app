@@ -5,8 +5,8 @@ import './index.less';
 import fetch from '@/services/axios';
 import { get } from 'lodash';
 import { getAppUrl } from '@/config/url.js';
-const GET_USER_INFO_API = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
-const DEITOR_USER_API = getAppUrl() + '/yzSmartGate/communityAppServer/modifyPerson';
+const GET_USER_INFO_API = getAppUrl() + '/yzSmartGate/manage/communityAppServer/getPersonSelf';
+const DEITOR_USER_API = getAppUrl() + '/yzSmartGate/manage/communityAppServer/modifyPerson';
 // const userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
 
 const option = [

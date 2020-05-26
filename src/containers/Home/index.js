@@ -6,9 +6,9 @@ import { get } from 'lodash';
 import './index.less';
 import { typeOf } from 'plupload';
 import { getAppUrl } from '@/config/url.js';
-const OPEN_URL = getAppUrl() + '/yzSmartGate/communityAppServer/openDoor';
-const PERINFO_URL = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
-const GATE_URL = getAppUrl() + '/yzSmartGate/communityAppServer/getFaceGateList';
+const OPEN_URL = getAppUrl() + '/yzSmartGate/manage/communityAppServer/openDoor';
+const PERINFO_URL = getAppUrl() + '/yzSmartGate/manage/communityAppServer/getPersonSelf';
+const GATE_URL = getAppUrl() + '/yzSmartGate/manage/communityAppServer/getFaceGateList';
 
 // window.updateValue = function(url) {
 //   console.log(url);

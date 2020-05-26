@@ -6,8 +6,8 @@ import fetch from '@/services/axios';
 import { getAppUrl } from '@/config/url.js';
 const Item = List.Item;
 
-const GET_PERSON_INFO = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
-const PHOTO_API = getAppUrl() + '/yzSmartGate/common/loadDfsPrefix';
+const GET_PERSON_INFO = getAppUrl() + '/yzSmartGate/manage/communityAppServer/getPersonSelf';
+const PHOTO_API = getAppUrl() + '/yzSmartGate/manage/common/loadDfsPrefix';
 
 function User() {
   const [perInfo, setPerInfo] = useState([]); //获取居民
