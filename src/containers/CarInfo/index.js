@@ -2,9 +2,14 @@ import React, { useState, useEffect } from 'react';
 import './index.less';
 import { List, InputItem, Button, WhiteSpace, WingBlank, Picker, Flex, Icon, Toast } from 'antd-mobile';
 import { createForm } from 'rc-form';
-import { ADDCAR_API, GETCARtYPE_API, DELETE_API, CARINFO_API } from './api/index';
+// import { ADDCAR_API, GETCARtYPE_API, DELETE_API, CARINFO_API } from './api/index';
 import fetch from '@/services/axios';
 import { get } from 'lodash';
+import { getAppUrl } from '@/config/url.js';
+const CARINFO_API = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
+const ADDCAR_API = getAppUrl() + '/yzSmartGate/communityAppServer/addVehicle';
+const GETCARtYPE_API = getAppUrl() + '/yzSmartGate/communityAppServer/getVehicleTypeList'; //车辆属性
+const DELETE_API = getAppUrl() + '/yzSmartGate/communityAppServer/delVehicle';
 
 const CarInfo = props => {
   const A = 'data:image/jpeg;base64,';
@@ -126,6 +131,7 @@ const CarInfo = props => {
       getOwnerCar(initUser); //获取本人的信息
     });
   };
+  const onChangeColor = () => {};
   return (
     <section className="cardInfo-page">
       <section className="cardInfo-page-content">
@@ -159,12 +165,10 @@ const CarInfo = props => {
           <Picker
             data={cartype}
             cols={1}
-            {...getFieldProps(
-              'type'
-              // {initialValue: owerCar.type}
-            )}
+            {...getFieldProps('type', { initialValue: [owerCar.type || ''] })}
             className="forss"
             // value={[owerCar.type]}
+            // onChange={onChangeColor}
           >
             <List.Item arrow="horizontal">车辆类型</List.Item>
           </Picker>

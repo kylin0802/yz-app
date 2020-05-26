@@ -5,9 +5,10 @@ import fetch from '@/services/axios';
 import { get } from 'lodash';
 import './index.less';
 import { typeOf } from 'plupload';
-const OPEN_URL = '/yzSmartGate/communityAppServer/openDoor';
-const PERINFO_URL = '/yzSmartGate/communityAppServer/getPersonSelf';
-const GATE_URL = '/yzSmartGate/communityAppServer/getFaceGateList';
+import { getAppUrl } from '@/config/url.js';
+const OPEN_URL = getAppUrl() + '/yzSmartGate/communityAppServer/openDoor';
+const PERINFO_URL = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
+const GATE_URL = getAppUrl() + '/yzSmartGate/communityAppServer/getFaceGateList';
 
 // window.updateValue = function(url) {
 //   console.log(url);

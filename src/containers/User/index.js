@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { List } from 'antd-mobile';
 import './index.less';
-import { GET_PERSON_INFO, PHOTO_API } from './api/index';
+// import { GET_PERSON_INFO, PHOTO_API } from './api/index';
 import fetch from '@/services/axios';
+import { getAppUrl } from '@/config/url.js';
 const Item = List.Item;
+
+const GET_PERSON_INFO = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
+const PHOTO_API = getAppUrl() + '/yzSmartGate/common/loadDfsPrefix';
+
 function User() {
   const [perInfo, setPerInfo] = useState([]); //获取居民
   const [comUrl, setComUrl] = useState('');
