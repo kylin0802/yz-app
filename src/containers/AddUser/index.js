@@ -76,7 +76,7 @@ function AddUser(props) {
       console.log(typeof res);
       console.log(res)
       console.log('照片路径傻逼', JSON.parse(res).base64);
-      setPhoto(A+JSON.parse(res).base64)
+      setPhoto(JSON.parse(res).base64)
     } catch (err) {
       console.log('照片上传报错');
       setPhoto('111');
@@ -154,7 +154,7 @@ function AddUser(props) {
           {/* <img src={img} alt="照片"/> */}
           <div className="user-page-image">
           {
-            !!user.facePhotoPath ? <img src={photo|| user.facePhotoPath } alt="照片" onClick={onChangeImg} />:  <Icon type="plus" />
+            !!user.facePhotoPath ? <img src={!!photo? A + photo: A + user.facePhotoPath } alt="照片" onClick={onChangeImg} />:  <Icon type="plus" />
           }
           </div>
         </div>

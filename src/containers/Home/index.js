@@ -70,7 +70,7 @@ const Nav = props => {
       initUser = JSON.stringify(data)
       console.log('本地', initUser)
     }
-    sessionStorage.setItem("userInfo", initUser)
+    // sessionStorage.setItem("userInfo", initUser)
   }, []);
 
 
