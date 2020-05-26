@@ -1,11 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Carousel from './components/Carousel';
-import { Icon } from 'antd-mobile';
+import { Icon, Modal, Toast } from 'antd-mobile';
 import fetch from '@/services/axios';
+import { get } from 'lodash';
 import './index.less';
 import { typeOf } from 'plupload';
 const OPEN_URL = '/yzSmartGate/communityAppServer/openDoor';
-
+const PERINFO_URL = '/yzSmartGate/communityAppServer/getPersonSelf';
+const GATE_URL = '/yzSmartGate/communityAppServer/getFaceGateList';
 
 // window.updateValue = function(url) {
 //   console.log(url);
@@ -14,35 +16,97 @@ const OPEN_URL = '/yzSmartGate/communityAppServer/openDoor';
 //       window.callback.updateValue(url);
 //   }
 // };
-
+const operation = Modal.operation;
 
 const PlaceHolder = props => {
   const { title, url, icon, api } = props;
+  const [initUsers, setInitUsers] = useState([]);
+  const [Gate, setGate] = useState(''); //设备表
+  const [data, setData] = useState('');
 
   const handleLink = url => {
-    if (!!api) {
-      fetch.post(api, {
-        deviceId: '18937fc30067',
-        personId: '3123123',
-        personName: 'personName001',
-        houseId: 'H101101',
-        areaId: '004'
-      }).then(res => {
-        console.log(res);
-      });
-    } else {
-      try {
-        window.jsInterface.jump(url);
-      } catch (err) {
-        props.history.push(url)
-       
-      }
-     
+    // if (!!api) {
+
+    // } else {
+    try {
+      window.jsInterface.jump(url);
+    } catch (err) {
+      props.history.push(url);
     }
+
+    // }
   };
+  const opendoor = () => {
+    //一键开门
+    // console.log('----------');
+    // let param = JSON.parse(sessionStorage.getItem('userInfo')).personId
+    fetch
+      .post(api, {
+        deviceId: Gate[0].deviceId,
+        personId: data.personId,
+        personName: initUsers.name,
+        houseId: initUsers.houseId,
+        areaId: initUsers.areaId
+      })
+      .then(res => {
+        if (get(res, 'state') === 10000) {
+          Toast.success(res.message === 'OK' ? '成功' : '失败');
+        }
+        // console.log(res);
+      });
+  };
+  const getdata = initUserer => {
+    //获取本人信息
+    // console.log('qqq',initUserer.personId)
+    fetch.post(PERINFO_URL, { personId: initUserer.personId }).then(res => {
+      // console.log('per',res.data)
+      setInitUsers(res.data);
+      getGateList(res.data.areaId);
+    });
+  };
+  const getGateList = param => {
+    //获取设备列表
+    fetch.post(GATE_URL, { areaId: param }).then(res => {
+      // console.log('aaaaaa',res)
+      setGate(res.data);
+    });
+  };
+
+  useEffect(() => {
+    let initUserer = null;
+    try {
+      window.jsInterface.getUserInfo();
+      console.log('123', window.jsInterface.getUserInfo());
+      initUserer = JSON.parse(window.jsInterface.getUserInfo());
+      console.log('安卓获取', initUserer);
+    } catch (err) {
+      initUserer = {
+        password: 'password003',
+        personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
+        userName: '1356669999',
+        status: 'localhost'
+      };
+    }
+    setData(initUserer);
+    getdata(initUserer);
+  }, []);
+
   return (
     <div className="home-page-tag-item">
-      <span className="home-page-tag-item-icon" onClick={e => handleLink(url)}>
+      <span
+        className="home-page-tag-item-icon"
+        onClick={
+          title === '手机开门'
+            ? () =>
+                operation(
+                  Gate &&
+                    Gate.map((item, index) => {
+                      return { text: item.location, onPress: opendoor };
+                      // { text: '二号门', onPress: () => console.log('置顶聊天被点击了') },
+                    })
+                )
+            : e => handleLink(url)
+        }>
         {/* <Icon type="check" /> */}
         <span className={icon}></span>
       </span>
@@ -51,29 +115,26 @@ const PlaceHolder = props => {
   );
 };
 const Nav = props => {
+  const [userInfo, setUserInfo] = useState('');
 
-  const [ userInfo, setUserInfo] =useState('')
- 
   useEffect(() => {
-    let initUser = null
-    try{
-      setUserInfo('我调取1' + window.jsInterface.getUserInfo()) // 获取初始化数据
-      initUser = window.jsInterface.getUserInfo()
-      console.log('安卓获取', initUser)
-    }catch (err) {
+    let initUser = null;
+    try {
+      setUserInfo('我调取1' + window.jsInterface.getUserInfo()); // 获取初始化数据
+      initUser = window.jsInterface.getUserInfo();
+      console.log('安卓获取', initUser);
+    } catch (err) {
       const data = {
-        "password":"password003",
-        "personId":"Pa5ec091ab78e4c22a46a28eeea891851",
-        "userName":"1356669999",
-        "status": "localhost"
-      }
-      initUser = JSON.stringify(data)
-      console.log('本地', initUser)
+        password: 'password003',
+        personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
+        userName: '1356669999',
+        status: 'localhost'
+      };
+      initUser = JSON.stringify(data);
+      console.log('本地', initUser);
     }
-    // sessionStorage.setItem("userInfo", initUser)
+    sessionStorage.setItem('userInfo', initUser);
   }, []);
-
-
 
   return (
     <div className="home-page-tag">

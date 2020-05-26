@@ -3,7 +3,6 @@ import { Flex } from 'antd-mobile';
 import classNames from 'classnames';
 import './index.less';
 
-
 const NavItem = ({ className = '', title, ...restProps }) => (
   <div className={`${className} nav-item`} {...restProps}>
     {title}
@@ -31,18 +30,17 @@ function Nav(props) {
     }
   ]);
   const handleClick = e => {
-    const data = navList.map(({ title, isActive , key}, index) => ({
+    const data = navList.map(({ title, isActive, key }, index) => ({
       isActive: e === index,
       title,
       key
     }));
     setNavList(data);
-    const params = data.filter(({isActive})=> {
-      return isActive
-    })[0].key
+    const params = data.filter(({ isActive }) => {
+      return isActive;
+    })[0].key;
     // console.log(params)
-    props.onSubmit(params)
-    
+    props.onSubmit(params);
   };
   return (
     <Flex>

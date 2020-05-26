@@ -4,29 +4,40 @@ import { createForm } from 'rc-form';
 import './index.less';
 import fetch from '@/services/axios';
 import { get } from 'lodash';
-
-const GET_USER_INFO_API = '/yzSmartGate/communityAppServer/getPersonSelf';
-const DEITOR_USER_API = '/yzSmartGate/communityAppServer/modifyPerson'
+import {getAppUrl} from '@/config/url.js'
+const GET_USER_INFO_API =getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
+const DEITOR_USER_API = getAppUrl() + '/yzSmartGate/communityAppServer/modifyPerson';
 // const userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
-const option = [
-  [
-    {
-      label: '租客',
-      value: false
-    },
-    {
-      label: '房东',
-      value: true
-    }
-  ]
-];
 
+
+const option = [
+  {
+    label:"租客",
+    
+    value: 'Owner',
+  },
+  {
+    label: "房东",
+    value: 'Tenant',
+  },
+  {
+    label: '家属',
+    value: 'Family',
+  },
+  {
+    label: "其他",
+    value: 'Other',
+  },
+  {
+    label: '未知',
+    value: 'Unkwon',
+  },
+];
 function AddUser(props) {
   const A = 'data:image/jpeg;base64,';
   const { getFieldProps } = props.form;
   const [user, setUser] = useState({});
-  const [initUser,setInitUser] = useState({})
-  const [selectValue, setSelectValue] = useState(false);
+  const [initUser, setInitUser] = useState({});
   const [photo, setPhoto] = useState('');
   const onChangeImg = f => {
     try {
@@ -41,22 +52,23 @@ function AddUser(props) {
     // setFiles(files);
   };
 
+ 
   useEffect(() => {
-    let initUser = null
+    let initUser = null;
     try {
       console.log('现在已经绑定 appTakePhoto');
       window.appTakePhoto = appTakePhoto; // 全局钩子，作用： 促使安卓调用
-      initUser = JSON.parse(window.jsInterface.getUserInfo())
-      console.log('安卓获取', initUser)
+      initUser = JSON.parse(window.jsInterface.getUserInfo());
+      console.log('安卓获取', initUser);
     } catch (err) {
       initUser = {
-        "password":"password003",
-        "personId":"Pa5ec091ab78e4c22a46a28eeea891851",
-        "userName":"1356669999",
-        "status": "localhost"
-      }    
+        password: 'password003',
+        personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
+        userName: '1356669999',
+        status: 'localhost'
+      };
     }
-    setInitUser(initUser)
+    setInitUser(initUser);
 
     fetch
       .post(GET_USER_INFO_API, {
@@ -65,22 +77,22 @@ function AddUser(props) {
       .then(res => {
         console.log(res);
         if (get(res, 'state') === 10000) {
-            setUser(res.data || {});
+          setUser(res.data || {});
         }
       });
   }, []);
 
-  const appTakePhoto = res => { // 安卓调用前端方法，传base64
+  const appTakePhoto = res => {
+    // 安卓调用前端方法，传base64
     // console.log(111)
     try {
       console.log(typeof res);
-      console.log(res)
+      console.log(res);
       console.log('照片路径傻逼', JSON.parse(res).base64);
-      setPhoto(JSON.parse(res).base64)
+      setPhoto(JSON.parse(res).base64);
     } catch (err) {
       console.log('照片上传报错');
       setPhoto('111');
-      
     }
   };
 
@@ -88,27 +100,27 @@ function AddUser(props) {
     props.form.validateFields({ force: true }, error => {
       if (!error) {
         console.log('测试', props.form.getFieldsValue());
+        const formData = props.form.getFieldsValue()
         let val = {
-          ...props.form.getFieldsValue(),
+          ...formData,
           areaId: user.areaId || '',
           houseId: user.houseId || '',
           personId: initUser.personId,
           facePhoto: photo,
-          personType: selectValue
+          personType: formData.personArr[0]
         };
-        console.log(val)
+        console.log(val);
         fetch.post(DEITOR_USER_API, val).then(res => {
-          console.log(res)
-          if(get(res, 'state') === 10000) {
-            Toast.success(res.message)
+          console.log(res);
+          if (get(res, 'state') === 10000) {
+            Toast.success(res.message);
           }
-        })
+        });
       } else {
         alert('Validation failed');
       }
     });
   };
-
 
   return (
     <div className="user-page">
@@ -121,24 +133,21 @@ function AddUser(props) {
           </InputItem>
           <InputItem
             {...getFieldProps('identity', { initialValue: user.identity || '' })}
-            // type="phone"
             clear
             placeholder="省份证号">
             省份证号
           </InputItem>
           <List.Item>
+          
             <Picker
-              data={option}
-              title=""
-              cascade={false}
-              // extra="请选择(可选)"
-              value={[selectValue]}
-              // value={this.state.sValue}
-              onChange={v => setSelectValue(v[0])}
-              //   onOk={v => this.setState({ sValue: v })}
-            >
-              <List.Item arrow="horizontal">类型</List.Item>
-            </Picker>
+         {...getFieldProps('personArr', {
+          initialValue: [user.personType|| ''],
+        })}
+          data={option}
+          cols={1}
+        >
+          <List.Item arrow="horizontal">类型</List.Item>
+        </Picker>
           </List.Item>
         </List>
       </section>
@@ -146,16 +155,17 @@ function AddUser(props) {
         <Flex justify="between" className="user-page-upload-title">
           <span className="inline">上传照片</span>
           <span className="inline" onClick={onChangeImg}>
-       
             选择图片
           </span>
         </Flex>
         <div className="user-page-upload-content">
           {/* <img src={img} alt="照片"/> */}
           <div className="user-page-image">
-          {
-            !!user.facePhotoPath ? <img src={!!photo? A + photo: A + user.facePhotoPath } alt="照片" onClick={onChangeImg} />:  <Icon type="plus" />
-          }
+            {!!user.facePhoto ? (
+              <img src={!!photo ? A + photo : A + user.facePhoto} alt="照片" onClick={onChangeImg} />
+            ) : (
+              <Icon type="plus" />
+            )}
           </div>
         </div>
         <WingBlank>

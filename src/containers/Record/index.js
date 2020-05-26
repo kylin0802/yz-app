@@ -3,13 +3,20 @@ import { Tabs } from 'antd-mobile';
 import Nav from './nav.js';
 import List from './list.js';
 import fetch from '@/services/axios';
-const GET_LIST_API = '/yzSmartGate/communityAppServer/queryPassthroughByPerson';
+import {getAppUrl} from '@/config/url.js'
+const GET_LIST_API = getAppUrl() + '/yzSmartGate/communityAppServer/queryPassthroughByPerson';
+
 const tabs = [{ title: '通行记录 ' }, { title: '报警记录' }];
 
-
-
 const RowA = [
-  { title: '通行时间', name: 'occurTime', key: 'occurTime' ,render: (res)=> {console.log(res)}},
+  {
+    title: '通行时间',
+    name: 'occurTime',
+    key: 'occurTime',
+    render: res => {
+      console.log(res);
+    }
+  },
   { title: '通行方式', name: 'passResult ', key: 'passResult' },
   { title: '通行人', name: 'personType', key: 'personType' }
 ];
@@ -27,15 +34,20 @@ const ListB = [
 ];
 
 const RowB = [
-  { title: '通行时间', name: 'time', key: 'time' , render: (res) => {
-    console.log(res)
-  }},
+  {
+    title: '通行时间',
+    name: 'time',
+    key: 'time',
+    render: res => {
+      console.log(res);
+    }
+  },
   { title: '通行方式', name: 'state', key: 'state' }
 ];
-const day = 24 * 60 * 60 ;
+const day = 24 * 60 * 60;
 const week = 24 * 60 * 60 * 7;
-const month = 24 * 60 * 60  * 30 * 7;
-const currentDay = parseInt( (+new Date())/ 1000)
+const month = 24 * 60 * 60 * 30 * 7;
+const currentDay = parseInt(+new Date() / 1000);
 const OneDay = currentDay - day;
 const OneMonth = currentDay - month;
 const OneWeek = currentDay - week;
@@ -43,7 +55,7 @@ const OneWeek = currentDay - week;
 // const currentDay  = + new Date()
 function Record() {
   const [beginTime, setBeginTime] = useState(OneDay);
-  const [list, setList] = useState([])
+  const [list, setList] = useState([]);
   useEffect(() => {
     fetch
       .post(GET_LIST_API, {
@@ -51,13 +63,13 @@ function Record() {
         beginTime,
         endTime: currentDay, //当前时间
         pageNumber: 1,
-        pageSize: 100,
+        pageSize: 100
         // pageNumber: 0,
         // pageSize: 100
       })
       .then(res => {
         console.log(res);
-        setList(res.data.content)
+        setList(res.data.content);
       });
   }, [beginTime]);
   const onSubmit = type => {
