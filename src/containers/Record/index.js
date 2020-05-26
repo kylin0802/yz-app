@@ -3,7 +3,9 @@ import { Tabs } from 'antd-mobile';
 import Nav from './nav.js';
 import List from './list.js';
 import fetch from '@/services/axios';
-const GET_LIST_API = '/yzSmartGate/communityAppServer/queryPassthroughByPerson';
+import { getAppUrl } from '@/config/url.js';
+const GET_LIST_API = getAppUrl() + '/yzSmartGate/communityAppServer/queryPassthroughByPerson';
+
 const tabs = [{ title: '通行记录 ' }, { title: '报警记录' }];
 
 const RowA = [
