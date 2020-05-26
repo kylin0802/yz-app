@@ -41,7 +41,7 @@ const CarInfo = props => {
       // console.log('车辆类型',res.data)
       let arrdata = res.data;
       arrdata = JSON.parse(JSON.stringify(arrdata).replace(/desc/g, 'label'));
-      console.log('geugai', arrdata);
+      // console.log('geugai', arrdata);
       setCartype(arrdata);
     });
   };
