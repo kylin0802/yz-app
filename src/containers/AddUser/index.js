@@ -4,34 +4,33 @@ import { createForm } from 'rc-form';
 import './index.less';
 import fetch from '@/services/axios';
 import { get } from 'lodash';
-import {getAppUrl} from '@/config/url.js'
-const GET_USER_INFO_API =getAppUrl() + '/yzSmartGate//manage/communityAppServer/getPersonSelf';
-const DEITOR_USER_API = getAppUrl() + '/yzSmartGate//manage/communityAppServer/modifyPerson';
+import { getAppUrl } from '@/config/url.js';
+const GET_USER_INFO_API = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
+const DEITOR_USER_API = getAppUrl() + '/yzSmartGate/communityAppServer/modifyPerson';
 // const userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
-
 
 const option = [
   {
-    label:"租客",
-    
-    value: 'Owner',
+    label: '租客',
+
+    value: 'Owner'
   },
   {
-    label: "房东",
-    value: 'Tenant',
+    label: '房东',
+    value: 'Tenant'
   },
   {
     label: '家属',
-    value: 'Family',
+    value: 'Family'
   },
   {
-    label: "其他",
-    value: 'Other',
+    label: '其他',
+    value: 'Other'
   },
   {
     label: '未知',
-    value: 'Unkwon',
-  },
+    value: 'Unkwon'
+  }
 ];
 function AddUser(props) {
   const A = 'data:image/jpeg;base64,';
@@ -52,7 +51,6 @@ function AddUser(props) {
     // setFiles(files);
   };
 
- 
   useEffect(() => {
     let initUser = null;
     try {
@@ -100,7 +98,7 @@ function AddUser(props) {
     props.form.validateFields({ force: true }, error => {
       if (!error) {
         console.log('测试', props.form.getFieldsValue());
-        const formData = props.form.getFieldsValue()
+        const formData = props.form.getFieldsValue();
         let val = {
           ...formData,
           areaId: user.areaId || '',
@@ -131,23 +129,18 @@ function AddUser(props) {
           <InputItem {...getFieldProps('name', { initialValue: user.name || '' })} placeholder="姓名">
             姓名
           </InputItem>
-          <InputItem
-            {...getFieldProps('identity', { initialValue: user.identity || '' })}
-            clear
-            placeholder="省份证号">
+          <InputItem {...getFieldProps('identity', { initialValue: user.identity || '' })} clear placeholder="省份证号">
             省份证号
           </InputItem>
           <List.Item>
-          
             <Picker
-         {...getFieldProps('personArr', {
-          initialValue: [user.personType|| ''],
-        })}
-          data={option}
-          cols={1}
-        >
-          <List.Item arrow="horizontal">类型</List.Item>
-        </Picker>
+              {...getFieldProps('personArr', {
+                initialValue: [user.personType || '']
+              })}
+              data={option}
+              cols={1}>
+              <List.Item arrow="horizontal">类型</List.Item>
+            </Picker>
           </List.Item>
         </List>
       </section>
