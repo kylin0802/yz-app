@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Carousel from './components/Carousel';
-import { Icon, Modal, Toast } from 'antd-mobile';
+import { Modal, Toast } from 'antd-mobile';
 import fetch from '@/services/axios';
 import { get } from 'lodash';
 import './index.less';
@@ -9,13 +9,6 @@ const OPEN_URL = getAppUrl() + '/yzSmartGate/communityAppServer/openDoor';
 const PERINFO_URL = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
 const GATE_URL = getAppUrl() + '/yzSmartGate/communityAppServer/getFaceGateList';
 
-// window.updateValue = function(url) {
-//   console.log(url);
-//   if(window.callback !== undefined) {
-//     console.log(1111)
-//       window.callback.updateValue(url);
-//   }
-// };
 const operation = Modal.operation;
 
 const PlaceHolder = props => {
@@ -25,16 +18,12 @@ const PlaceHolder = props => {
   const [data, setData] = useState('');
 
   const handleLink = url => {
-    // if (!!api) {
-
-    // } else {
+   
     try {
       window.jsInterface.jump(url);
     } catch (err) {
       props.history.push(url);
     }
-
-    // }
   };
   const opendoor = () => {
     //一键开门
@@ -115,27 +104,7 @@ const PlaceHolder = props => {
   );
 };
 const Nav = props => {
-  const [userInfo, setUserInfo] = useState('');
-
-  useEffect(() => {
-    let initUser = null;
-    try {
-      setUserInfo('我调取1' + window.jsInterface.getUserInfo()); // 获取初始化数据
-      initUser = window.jsInterface.getUserInfo();
-      console.log('安卓获取', initUser);
-    } catch (err) {
-      const data = {
-        password: 'password003',
-        personId: 'Pc8175247af9044589ebbf024f2455ebf',
-        userName: '1356669999',
-        status: 'localhost'
-      };
-      initUser = JSON.stringify(data);
-      console.log('本地', initUser);
-    }
-    sessionStorage.setItem('userInfo', initUser);
-  }, []);
-
+ 
   return (
     <div className="home-page-tag">
       <PlaceHolder title="手机开门" {...props} icon="icon-door" api={OPEN_URL} />

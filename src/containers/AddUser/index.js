@@ -7,37 +7,18 @@ import { get } from 'lodash';
 import { getAppUrl } from '@/config/url.js';
 const GET_USER_INFO_API = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
 const DEITOR_USER_API = getAppUrl() + '/yzSmartGate/communityAppServer/modifyPerson';
+const GET_PERSON_TYPE_API = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonTypeList'
+
 // const userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
 
-const option = [
-  {
-    label: '租客',
 
-    value: 'Owner'
-  },
-  {
-    label: '房东',
-    value: 'Tenant'
-  },
-  {
-    label: '家属',
-    value: 'Family'
-  },
-  {
-    label: '其他',
-    value: 'Other'
-  },
-  {
-    label: '未知',
-    value: 'Unkwon'
-  }
-];
 function AddUser(props) {
   const A = 'data:image/jpeg;base64,';
   const { getFieldProps } = props.form;
   const [user, setUser] = useState({});
   const [initUser, setInitUser] = useState({});
   const [photo, setPhoto] = useState('');
+  const [roleStatus, setRoleStatus] = useState([])
   const onChangeImg = f => {
     try {
       console.log('调取摄像头');
@@ -50,6 +31,15 @@ function AddUser(props) {
     // console.log(files, type, index);
     // setFiles(files);
   };
+
+  const getPersonType = () => {
+    fetch.post(GET_PERSON_TYPE_API).then(res => {
+     
+      const arr = res.data.map(item => ({ value:item.value,
+        label: item.desc}))
+       setRoleStatus(arr)
+    })
+}
 
   useEffect(() => {
     let initUser = null;
@@ -67,13 +57,13 @@ function AddUser(props) {
       };
     }
     setInitUser(initUser);
-
+    getPersonType()
     fetch
       .post(GET_USER_INFO_API, {
         personId: initUser.personId
       })
       .then(res => {
-        console.log(res);
+        // console.log(res);
         if (get(res, 'state') === 10000) {
           setUser(res.data || {});
         }
@@ -137,7 +127,7 @@ function AddUser(props) {
               {...getFieldProps('personArr', {
                 initialValue: [user.personType || '']
               })}
-              data={option}
+              data={roleStatus}
               cols={1}>
               <List.Item arrow="horizontal">类型</List.Item>
             </Picker>
