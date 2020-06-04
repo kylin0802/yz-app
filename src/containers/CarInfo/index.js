@@ -6,10 +6,10 @@ import { createForm } from 'rc-form';
 import fetch from '@/services/axios';
 import { get } from 'lodash';
 import { getAppUrl } from '@/config/url.js';
-const CARINFO_API = '/yzSmartGate/communityAppServer/getPersonSelf';
-const ADDCAR_API = '/yzSmartGate/communityAppServer/addVehicle';
-const GETCARtYPE_API = '/yzSmartGate/communityAppServer/getVehicleTypeList'; //车辆属性
-const DELETE_API = '/yzSmartGate/communityAppServer/delVehicle';
+const CARINFO_API = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
+const ADDCAR_API = getAppUrl() + '/yzSmartGate/communityAppServer/addVehicle';
+const GETCARtYPE_API = getAppUrl() + '/yzSmartGate/communityAppServer/getVehicleTypeList'; //车辆属性
+const DELETE_API = getAppUrl() + '/yzSmartGate/communityAppServer/delVehicle';
 
 const CarInfo = props => {
   const A = 'data:image/jpeg;base64,';

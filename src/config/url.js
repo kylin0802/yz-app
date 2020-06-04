@@ -10,6 +10,7 @@ export const getAppUrl = () => {
   try {
     console.log(window.jsInterface.baseUrl());
     return window.jsInterface.baseUrl();
+    // return '';
   } catch (err) {
     console.log(err);
     return '';

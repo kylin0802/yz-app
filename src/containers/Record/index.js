@@ -4,6 +4,7 @@ import Nav from './nav.js';
 import List from './list.js';
 import fetch from '@/services/axios';
 import { getAppUrl } from '@/config/url.js';
+import initUser from '@/config/initUser';
 const GET_LIST_API = getAppUrl() + '/yzSmartGate/communityAppServer/queryPassthroughByPerson';
 
 const tabs = [{ title: '通行记录 ' }, { title: '报警记录' }];
@@ -59,7 +60,7 @@ function Record() {
   useEffect(() => {
     fetch
       .post(GET_LIST_API, {
-        personId: 'P67c6d587d5834e7ea637936707e793d0',
+        personId: initUser.personId,
         beginTime,
         endTime: currentDay, //当前时间
         pageNumber: 1,

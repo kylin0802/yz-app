@@ -5,8 +5,8 @@ import fetch from '@/services/axios';
 import { get } from 'lodash';
 import { getAppUrl } from '@/config/url.js';
 import './index.less';
-const PERTYPE_API = '/yzSmartGate/communityAppServer/getPersonTypeList';
-const ADDPERSON_API = '/yzSmartGate/communityAppServer/addPersonByHouseOwner';
+const PERTYPE_API = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonTypeList';
+const ADDPERSON_API = getAppUrl() + '/yzSmartGate/communityAppServer/addPersonByHouseOwner';
 
 const AddFamily = props => {
   const A = 'data:image/jpeg;base64,';
