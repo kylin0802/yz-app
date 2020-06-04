@@ -7,9 +7,11 @@ export const getPrefix = () => {
 export const getAppUrl = () => {
   //
   // 由于 通用地址连的是本地安卓， 请求服务器地址调取
-  if (window.takePhoto) {
+  try {
+    console.log(window.jsInterface.baseUrl());
     return window.jsInterface.baseUrl();
-  } else {
+  } catch (err) {
+    console.log(err);
     return '';
   }
 };

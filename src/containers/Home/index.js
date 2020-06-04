@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Carousel from './components/Carousel';
-import { Icon, Modal, Toast } from 'antd-mobile';
+import { Modal, Toast } from 'antd-mobile';
 import fetch from '@/services/axios';
 import { get } from 'lodash';
 import './index.less';
-import { typeOf } from 'plupload';
 import { getAppUrl } from '@/config/url.js';
-const OPEN_URL = getAppUrl() + '/yzSmartGate/manage/communityAppServer/openDoor';
-const PERINFO_URL = getAppUrl() + '/yzSmartGate/manage/communityAppServer/getPersonSelf';
-const GATE_URL = getAppUrl() + '/yzSmartGate/manage/communityAppServer/getFaceGateList';
+const OPEN_URL = getAppUrl() + '/yzSmartGate/communityAppServer/openDoor';
+const PERINFO_URL = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
+const GATE_URL = getAppUrl() + '/yzSmartGate/communityAppServer/getFaceGateList';
 
 // window.updateValue = function(url) {
 //   console.log(url);
@@ -22,8 +21,8 @@ const operation = Modal.operation;
 const PlaceHolder = props => {
   const { title, url, icon, api } = props;
   const [initUsers, setInitUsers] = useState([]);
-  const [Gate, setGate] = useState(''); //设备表
-  const [data, setData] = useState('');
+  const [Gate, setGate] = useState([]); //设备表
+  const [datar, setData] = useState([]);
 
   const handleLink = url => {
     // if (!!api) {
@@ -44,12 +43,13 @@ const PlaceHolder = props => {
     fetch
       .post(api, {
         deviceId: Gate[0].deviceId,
-        personId: data.personId,
+        personId: datar.personId,
         personName: initUsers.name,
         houseId: initUsers.houseId,
         areaId: initUsers.areaId
       })
       .then(res => {
+        console.log('123', res);
         if (get(res, 'state') === 10000) {
           Toast.success(res.message === 'OK' ? '成功' : '失败');
         }
@@ -61,15 +61,19 @@ const PlaceHolder = props => {
     // console.log('qqq',initUserer.personId)
     fetch.post(PERINFO_URL, { personId: initUserer.personId }).then(res => {
       // console.log('per',res.data)
-      setInitUsers(res.data);
-      getGateList(res.data.areaId);
+      if (get(res, 'state') === 10000) {
+        setInitUsers(res.data || {});
+        getGateList(res.data.areaId || {});
+      }
     });
   };
   const getGateList = param => {
     //获取设备列表
     fetch.post(GATE_URL, { areaId: param }).then(res => {
       // console.log('aaaaaa',res)
-      setGate(res.data);
+      if (get(res, 'state') === 10000) {
+        setGate(res.data || {});
+      }
     });
   };
 

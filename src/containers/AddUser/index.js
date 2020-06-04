@@ -5,8 +5,8 @@ import './index.less';
 import fetch from '@/services/axios';
 import { get } from 'lodash';
 import { getAppUrl } from '@/config/url.js';
-const GET_USER_INFO_API = getAppUrl() + '/yzSmartGate/manage/communityAppServer/getPersonSelf';
-const DEITOR_USER_API = getAppUrl() + '/yzSmartGate/manage/communityAppServer/modifyPerson';
+const GET_USER_INFO_API = '/yzSmartGate/communityAppServer/getPersonSelf';
+const DEITOR_USER_API = '/yzSmartGate/communityAppServer/modifyPerson';
 // const userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
 
 const option = [
@@ -148,6 +148,7 @@ function AddUser(props) {
         <Flex justify="between" className="user-page-upload-title">
           <span className="inline">上传照片</span>
           <span className="inline" onClick={onChangeImg}>
+            {''}
             选择图片
           </span>
         </Flex>

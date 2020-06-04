@@ -4,10 +4,11 @@ import './index.less';
 // import { GET_PERSON_INFO, PHOTO_API } from './api/index';
 import fetch from '@/services/axios';
 import { getAppUrl } from '@/config/url.js';
+import { get } from 'lodash';
 const Item = List.Item;
 
-const GET_PERSON_INFO = getAppUrl() + '/yzSmartGate/manage/communityAppServer/getPersonSelf';
-const PHOTO_API = getAppUrl() + '/yzSmartGate/manage/common/loadDfsPrefix';
+const GET_PERSON_INFO = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
+const PHOTO_API = getAppUrl() + '/yzSmartGate/common/loadDfsPrefix';
 
 function User() {
   const [perInfo, setPerInfo] = useState([]); //获取居民
@@ -17,7 +18,9 @@ function User() {
   const getPerInfo = initUser => {
     fetch.post(GET_PERSON_INFO, { personId: initUser.personId }).then(res => {
       // console.log('本人信息',res.data)
-      setPerInfo(res.data);
+      if (get(res, 'state') === 10000) {
+        setPerInfo(res.data || {});
+      }
     });
   };
   const getComUrl = () => {

@@ -6,10 +6,10 @@ import { createForm } from 'rc-form';
 import fetch from '@/services/axios';
 import { get } from 'lodash';
 import { getAppUrl } from '@/config/url.js';
-const CARINFO_API = getAppUrl() + '/yzSmartGate/manage/communityAppServer/getPersonSelf';
-const ADDCAR_API = getAppUrl() + '/yzSmartGate/manage/communityAppServer/addVehicle';
-const GETCARtYPE_API = getAppUrl() + '/yzSmartGate/manage/communityAppServer/getVehicleTypeList'; //车辆属性
-const DELETE_API = getAppUrl() + '/yzSmartGate/manage/communityAppServer/delVehicle';
+const CARINFO_API = '/yzSmartGate/communityAppServer/getPersonSelf';
+const ADDCAR_API = '/yzSmartGate/communityAppServer/addVehicle';
+const GETCARtYPE_API = '/yzSmartGate/communityAppServer/getVehicleTypeList'; //车辆属性
+const DELETE_API = '/yzSmartGate/communityAppServer/delVehicle';
 
 const CarInfo = props => {
   const A = 'data:image/jpeg;base64,';
@@ -36,7 +36,9 @@ const CarInfo = props => {
     //获取本人的照片
     fetch.post(CARINFO_API, { personId: initUser.personId }).then(res => {
       // console.log('本人的车辆信息', res.data.vehicle[0]);
-      setOwnercar(res.data.vehicle[0] || {});
+      if (get(res, 'state') === 10000) {
+        setOwnercar((res.data.vehicle && res.data.vehicle[0]) || {});
+      }
     });
   };
 
@@ -44,10 +46,12 @@ const CarInfo = props => {
     //获取车辆类型
     fetch.post(GETCARtYPE_API).then(res => {
       // console.log('车辆类型',res.data)
-      let arrdata = res.data;
-      arrdata = JSON.parse(JSON.stringify(arrdata).replace(/desc/g, 'label'));
-      // console.log('geugai', arrdata);
-      setCartype(arrdata);
+      if (get(res, 'state') === 10000) {
+        let arrdata = res.data || {};
+        arrdata = JSON.parse(JSON.stringify(arrdata).replace(/desc/g, 'label'));
+        // console.log('geugai', arrdata);
+        setCartype(arrdata);
+      }
     });
   };
 
@@ -58,6 +62,7 @@ const CarInfo = props => {
       window.appTakePhoto = appTakePhoto; // 全局钩子，作用： 促使安卓调用
       initUser = JSON.parse(window.jsInterface.getUserInfo());
       console.log('安卓获取', initUser);
+      console.log('perid', initUser.personId);
     } catch (err) {
       console.log('绑定报错');
       initUser = {
@@ -78,7 +83,7 @@ const CarInfo = props => {
       console.log(typeof res);
       console.log(res);
       console.log('照片路径傻逼', JSON.parse(res).base64);
-      setPhoto(A + JSON.parse(res).base64);
+      setPhoto(JSON.parse(res).base64);
     } catch (err) {
       console.log('照片上传报错');
       setPhoto('111');
@@ -87,7 +92,7 @@ const CarInfo = props => {
 
   const onSubmite = () => {
     //添加车辆
-
+    console.log('拿到的地址', photo);
     validateFields((err, values) => {
       let param = {
         personId: initUser.personId,
@@ -125,19 +130,21 @@ const CarInfo = props => {
         console.log('删除', res);
         if (get(res, 'state') === 10000) {
           Toast.success(res.message);
+          resetFields();
+          setPhoto('');
+          getOwnerCar(initUser); //获取本人的信息
         }
       });
-      resetFields();
-      getOwnerCar(initUser); //获取本人的信息
     });
   };
-  const onChangeColor = () => {};
+
   return (
     <section className="cardInfo-page">
       <section className="cardInfo-page-content">
         <section className="cardInfo-page-content-text">完善基本信息</section>
 
         <List className="cardInfo-page-content-text-list">
+          <WhiteSpace />
           <InputItem
             {...getFieldProps('brand', { initialValue: owerCar.brand || '' })}
             placeholder="请输入车辆品牌（必填）">
@@ -145,19 +152,19 @@ const CarInfo = props => {
           </InputItem>
           <WhiteSpace />
 
-          <InputItem {...getFieldProps('model', { initialValue: owerCar.model || '' })} placeholder="车辆型号">
+          <InputItem {...getFieldProps('model', { initialValue: owerCar.model || '' })} placeholder="车辆型号（必填）">
             车辆型号
           </InputItem>
           <WhiteSpace />
 
           <InputItem
             {...getFieldProps('plateNumber', { initialValue: owerCar.plateNumber || '' })}
-            placeholder="车辆号牌">
+            placeholder="车辆号牌（必填）">
             车辆号牌
           </InputItem>
           <WhiteSpace />
 
-          <InputItem {...getFieldProps('color', { initialValue: owerCar.color || '' })} placeholder="车辆颜色">
+          <InputItem {...getFieldProps('color', { initialValue: owerCar.color || '' })} placeholder="车辆颜色（必填）">
             车辆颜色
           </InputItem>
           <WhiteSpace />
@@ -185,17 +192,19 @@ const CarInfo = props => {
         <Flex justify="between" className="user-page-upload-title">
           <span className="inline"> 上传照片</span>
           <span className="inline" onClick={onChangeImg}>
-            {' '}
             选择图片
           </span>
         </Flex>
         <div className="user-page-upload-content">
           {/* <img src={photo} /> */}
-          {!!owerCar.vehiclePhoto ? (
-            <img src={photo || owerCar.vehiclePhoto} alt="照片" onClick={onChangeImg} />
-          ) : (
-            <Icon type="plus" />
-          )}
+          <div className="user-page-image">
+            {!!photo || !!owerCar.vehiclePhoto ? (
+              // <img src={A+photo && A+owerCar.vehiclePhoto} alt="照片" onClick={onChangeImg} />
+              <img src={!!photo ? A + photo : A + owerCar.vehiclePhoto} alt="照片" onClick={onChangeImg} />
+            ) : (
+              <Icon type="plus" />
+            )}
+          </div>
         </div>
         <WingBlank>
           <Button type="primary" style={{ marginTop: '75px' }} onClick={onSubmite}>
