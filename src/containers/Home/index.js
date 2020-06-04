@@ -4,7 +4,6 @@ import { Icon, Modal, Toast } from 'antd-mobile';
 import fetch from '@/services/axios';
 import { get } from 'lodash';
 import './index.less';
-import { typeOf } from 'plupload';
 import { getAppUrl } from '@/config/url.js';
 const OPEN_URL = getAppUrl() + '/yzSmartGate/communityAppServer/openDoor';
 const PERINFO_URL = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';

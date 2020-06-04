@@ -9,10 +9,19 @@ const Item = List.Item;
 const GET_PERSON_INFO = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
 const PHOTO_API = getAppUrl() + '/yzSmartGate/common/loadDfsPrefix';
 
-function User() {
+function User(props) {
   const [perInfo, setPerInfo] = useState([]); //获取居民
   const [comUrl, setComUrl] = useState('');
   const [initUser, setInitUser] = useState({});
+  const handleLink = url => {
+
+    try {
+      window.jsInterface.jump(url);
+    } catch (err) {
+      props.history.push(url);
+    }
+  }
+    // }
 
   const getPerInfo = initUser => {
     fetch.post(GET_PERSON_INFO, { personId: initUser.personId }).then(res => {
@@ -59,7 +68,10 @@ function User() {
           <Item extra={perInfo.address}>我的住址</Item>
         </List>
         <List className="my-list">
-          <Item arrow="horizontal" multipleLine onClick={() => {}}>
+          <Item arrow="horizontal" multipleLine onClick={() => {
+handleLink('/user/member')
+
+          } }>
             绑定账号设置
           </Item>
         </List>
