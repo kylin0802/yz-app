@@ -111,7 +111,7 @@ const Nav = props => {
   return (
     <div className="home-page-tag">
       <PlaceHolder title="手机开门" {...props} icon="icon-door" api={OPEN_URL} />
-      <PlaceHolder title="一键进小区" {...props} icon="icon-open" />
+      <PlaceHolder title="绑定成员" {...props} icon="icon-open" url="/user/Binding" />
       <PlaceHolder title="信息注册" {...props} icon="icon-loginout" url="/user/addUser" />
       <PlaceHolder title="车辆信息" {...props} url="/user/CarInfo" icon="icon-car" />
       <PlaceHolder title="添加成员" {...props} url="/user/AddFamily" icon="icon-user" />

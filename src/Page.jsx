@@ -7,6 +7,7 @@ import CarInfo from './containers/CarInfo';
 import AddFamily from './containers/AddFamily';
 import Record from './containers/Record';
 import Member from './containers/Member';
+import Binding from './containers/Binding';
 
 // import NoFind from './containers/NoFind';
 
@@ -20,6 +21,7 @@ export default props => {
         <Route exact path="/user/carInfo" component={CarInfo} />
         <Route exact path="/user/addFamily" component={AddFamily} />
         <Route exact path="/user/member" component={Member} />
+        <Route exact path="/user/binding" component={Binding} />
         <Route path="/" component={App} />
         <Redirect to="/404" />
       </Switch>

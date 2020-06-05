@@ -111,6 +111,8 @@ const CarInfo = props => {
         console.log('添加', res);
         if (get(res, 'state') === 10000) {
           Toast.success(res.message);
+        } else {
+          Toast.success(res.message);
         }
       });
       // resetFields();
@@ -208,7 +210,7 @@ const CarInfo = props => {
         </div>
         <WingBlank>
           <Button type="primary" style={{ marginTop: '75px' }} onClick={onSubmite}>
-            完成
+            保存
           </Button>
           <Button type="danger" style={{ marginTop: '5px' }} onClick={onDelete}>
             删除
