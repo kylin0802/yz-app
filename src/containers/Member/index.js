@@ -4,9 +4,9 @@ import fetch from '@/services/axios';
 import { getAppUrl } from '@/config/url.js';
 import initUser from '@/config/initUser';
 
-const GET_MEMBER_LIST_API = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonListByHouse';
-const DELETE_USER_API = getAppUrl() + '/yzSmartGate/communityAppServer/removePersonFromHouse';
-const GET_PERSON_TYPE_API = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonTypeList';
+const GET_MEMBER_LIST_API = getAppUrl() + '/yzSmartGate/app/getPersonListByHouse';
+const DELETE_USER_API = getAppUrl() + '/yzSmartGate/app/removePersonFromHouse';
+const GET_PERSON_TYPE_API = getAppUrl() + '/yzSmartGate/app/getPersonTypeList';
 
 function Member() {
   const [list, setList] = useState([]);

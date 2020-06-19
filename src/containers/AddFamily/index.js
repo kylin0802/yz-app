@@ -5,8 +5,8 @@ import fetch from '@/services/axios';
 import { get } from 'lodash';
 import { getAppUrl } from '@/config/url.js';
 import './index.less';
-const PERTYPE_API = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonTypeList';
-const ADDPERSON_API = getAppUrl() + '/yzSmartGate/communityAppServer/addPersonByHouseOwner';
+const PERTYPE_API = getAppUrl() + '/yzSmartGate/app/getPersonTypeList';
+const ADDPERSON_API = getAppUrl() + '/yzSmartGate/app/addPersonByHouseOwner';
 
 const AddFamily = props => {
   const A = 'data:image/jpeg;base64,';
@@ -22,8 +22,8 @@ const AddFamily = props => {
         console.log('dasd', props.form.getFieldsValue());
         const formData = props.form.getFieldsValue();
         let val = { ...formData, facePhoto: photo, personId: initUser.personId };
-        val.personType = formData.personType[0];
-        console.log('chashu', val);
+        val.personType = formData.personType ? formData.personType[0] : '';
+        // console.log('chashu', val);
         fetch.post(ADDPERSON_API, val).then(res => {
           console.log('返回的值', res);
           if (get(res, 'state') === 10000) {
@@ -54,7 +54,7 @@ const AddFamily = props => {
   const onChangeImg = f => {
     try {
       console.log('调取摄像头');
-      window.takePhoto.takeFromJs(); // 前端调取摄像头
+      window.takePhoto.openFaceCamera(); // 前端调取摄像头
       // console.log(window.takePhoto.takeFromJs())
     } catch (err) {
       console.log('调用摄像头错误', f);
@@ -132,7 +132,11 @@ const AddFamily = props => {
             <div className="user-page-upload-content">
               {/* <img src={img} alt="照片"/> */}
               <div className="user-page-image">
-                {photo ? <img src={A + photo} alt="照片" onClick={onChangeImg} /> : <Icon type="plus" />}
+                {photo ? (
+                  <img src={A + photo} alt="照片" onClick={onChangeImg} />
+                ) : (
+                  <Icon type="plus" onClick={onChangeImg} />
+                )}
               </div>
             </div>
             <WhiteSpace />

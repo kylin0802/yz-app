@@ -6,10 +6,10 @@ import { createForm } from 'rc-form';
 import fetch from '@/services/axios';
 import { get } from 'lodash';
 import { getAppUrl } from '@/config/url.js';
-const CARINFO_API = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
-const ADDCAR_API = getAppUrl() + '/yzSmartGate/communityAppServer/addVehicle';
-const GETCARtYPE_API = getAppUrl() + '/yzSmartGate/communityAppServer/getVehicleTypeList'; //车辆属性
-const DELETE_API = getAppUrl() + '/yzSmartGate/communityAppServer/delVehicle';
+const CARINFO_API = getAppUrl() + '/yzSmartGate/app/getPersonSelf';
+const ADDCAR_API = getAppUrl() + '/yzSmartGate/app/addVehicle';
+const GETCARtYPE_API = getAppUrl() + '/yzSmartGate/app/getVehicleTypeList'; //车辆属性
+const DELETE_API = getAppUrl() + '/yzSmartGate/app/delVehicle';
 
 const CarInfo = props => {
   const A = 'data:image/jpeg;base64,';
@@ -23,7 +23,7 @@ const CarInfo = props => {
     try {
       console.log('调取摄像头');
 
-      window.takePhoto.takeFromJs(); // 前端调取摄像头
+      window.takePhoto.openCamera(); // 前端调取摄像头
       // console.log(window.takePhoto.takeFromJs())
     } catch (err) {
       console.log('调用摄像头错误', f);
@@ -204,7 +204,7 @@ const CarInfo = props => {
               // <img src={A+photo && A+owerCar.vehiclePhoto} alt="照片" onClick={onChangeImg} />
               <img src={!!photo ? A + photo : A + owerCar.vehiclePhoto} alt="照片" onClick={onChangeImg} />
             ) : (
-              <Icon type="plus" />
+              <Icon type="plus" onClick={onChangeImg} />
             )}
           </div>
         </div>

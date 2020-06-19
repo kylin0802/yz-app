@@ -15,6 +15,7 @@ function Menu(props) {
   const MenuItemStyles = menu => classNames(Styles.MenuItem, { [Styles.Active]: selectedMenu === menu.key });
   return (
     <section className={Styles.Wrapper} style={{ display: 'none' }}>
+      {/* <section className={Styles.Wrapper}> */}
       {routesConfig.map(menu => {
         return (
           <Link className={MenuItemStyles(menu)} to={`/${menu.key}`} key={menu.key}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { List } from 'antd-mobile';
+import { List, Button, WingBlank, WhiteSpace } from 'antd-mobile';
 import './index.less';
 // import { GET_PERSON_INFO, PHOTO_API } from './api/index';
 import fetch from '@/services/axios';
@@ -7,7 +7,7 @@ import { getAppUrl } from '@/config/url.js';
 import { get } from 'lodash';
 const Item = List.Item;
 
-const GET_PERSON_INFO = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
+const GET_PERSON_INFO = getAppUrl() + '/yzSmartGate/app/getPersonSelf';
 const PHOTO_API = getAppUrl() + '/yzSmartGate/common/loadDfsPrefix';
 
 function User(props) {
@@ -22,7 +22,14 @@ function User(props) {
     }
   };
   // }
-
+  const loginout = () => {
+    console.log('退出', 123);
+    try {
+      window.jsInterface.logout();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const getPerInfo = initUser => {
     fetch.post(GET_PERSON_INFO, { personId: initUser.personId }).then(res => {
       // console.log('本人信息',res.data)
@@ -44,10 +51,10 @@ function User(props) {
       console.log('安卓获取', initUser);
     } catch (err) {
       initUser = {
-        password: 'password003',
-        personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
-        userName: '1356669999',
-        status: 'localhost'
+        password: '',
+        personId: '',
+        userName: '',
+        status: ''
       };
     }
     setInitUser(initUser);
@@ -94,6 +101,12 @@ function User(props) {
             关于
           </Item>
         </List>
+        <WingBlank>
+          <Button type="primary" className="listItem-page-button" style={{ marginTop: '15px' }} onClick={loginout}>
+            退出
+          </Button>
+          <WhiteSpace />
+        </WingBlank>
       </div>
     </div>
   );

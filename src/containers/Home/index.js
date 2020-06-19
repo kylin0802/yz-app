@@ -5,9 +5,10 @@ import fetch from '@/services/axios';
 import { get } from 'lodash';
 import './index.less';
 import { getAppUrl } from '@/config/url.js';
-const OPEN_URL = getAppUrl() + '/yzSmartGate/communityAppServer/openDoor';
-const PERINFO_URL = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
-const GATE_URL = getAppUrl() + '/yzSmartGate/communityAppServer/getFaceGateList';
+const OPEN_URL = getAppUrl() + '/yzSmartGate/app/openDoor';
+const PERINFO_URL = getAppUrl() + '/yzSmartGate/app/getPersonSelf';
+const GATE_URL = getAppUrl() + '/yzSmartGate/app/getFaceGateList';
+const LOGIN_URL = getAppUrl() + '/yzSmartGate/app/login';
 
 const operation = Modal.operation;
 
@@ -66,6 +67,9 @@ const PlaceHolder = props => {
   };
 
   useEffect(() => {
+    // fetch.post(LOGIN_URL, { userName: "1555", password: "12345" }).then(res => {
+    //   console.log('res', res)
+    // })
     let initUserer = null;
     try {
       window.jsInterface.getUserInfo();

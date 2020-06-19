@@ -5,8 +5,8 @@ import fetch from '@/services/axios';
 import { get } from 'lodash';
 import { getAppUrl } from '@/config/url.js';
 // import './index.less';
-const PERTYPE_API = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonTypeList';
-const ADDPERSON_API = getAppUrl() + '/yzSmartGate/communityAppServer/attachPersonToHouse';
+const PERTYPE_API = getAppUrl() + '/yzSmartGate/app/getPersonTypeList';
+const ADDPERSON_API = getAppUrl() + '/yzSmartGate/app/attachPersonToHouse';
 
 const Binding = props => {
   const [personType, setpersonType] = useState([]); //获取车辆类型

@@ -5,9 +5,9 @@ import './index.less';
 import fetch from '@/services/axios';
 import { get } from 'lodash';
 import { getAppUrl } from '@/config/url.js';
-const GET_USER_INFO_API = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonSelf';
-const DEITOR_USER_API = getAppUrl() + '/yzSmartGate/communityAppServer/modifyPerson';
-const GET_PERSON_TYPE_API = getAppUrl() + '/yzSmartGate/communityAppServer/getPersonTypeList';
+const GET_USER_INFO_API = getAppUrl() + '/yzSmartGate/app/getPersonSelf';
+const DEITOR_USER_API = getAppUrl() + '/yzSmartGate/app/modifyPerson';
+const GET_PERSON_TYPE_API = getAppUrl() + '/yzSmartGate/app/getPersonTypeList';
 
 // const userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
 
@@ -21,7 +21,7 @@ function AddUser(props) {
   const onChangeImg = f => {
     try {
       console.log('调取摄像头');
-      window.takePhoto.takeFromJs(); // 前端调取摄像头
+      window.takePhoto.openFaceCamera(); // 前端调取摄像头
       // console.log(window.takePhoto.takeFromJs())
     } catch (err) {
       console.log('调用摄像头错误', f);
@@ -142,7 +142,7 @@ function AddUser(props) {
         <div className="user-page-upload-content">
           {/* <img src={img} alt="照片"/> */}
           <div className="user-page-image">
-            {!!user.facePhoto ? (
+            {!!photo || !!user.facePhoto ? (
               <img src={!!photo ? A + photo : A + user.facePhoto} alt="照片" onClick={onChangeImg} />
             ) : (
               <Icon type="plus" />

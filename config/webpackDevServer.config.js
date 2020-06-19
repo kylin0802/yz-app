@@ -85,8 +85,8 @@ module.exports = function(proxy, allowedHost) {
     //proxy,
     proxy: {
       "/yzSmartGate": {
-        // target: 'http://192.168.1.233:8088',
-        target: 'http://192.168.1.44:8088', //app
+        target: 'http://192.168.1.51:8088',
+        // target: 'http://192.168.1.44:8088', //app
         // target: 'http://192.168.1.170:8080', // 测试环境
         // target: 'http://192.168.1.23:7001',
         // target: 'http://192.168.1.24:8088', // 熊伟环境
