@@ -1,4 +1,0 @@
-export const EXAM_POINT_API = '/yzSmartGate/manage/examSite/query'//获取考点列表
-export const ADD_EXAM_POINT_API = '/yzSmartGate/manage/examSite/add' //考点添加
-export const DETAIL_EXAM_POINT_API = '/yzSmartGate/manage/examSite/modify'//考点信息修改
-export const DELETE_EXAM_POINT_API = '/yzSmartGate/manage/examSite/delete' //考点删除

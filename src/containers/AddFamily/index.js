@@ -45,7 +45,9 @@ const AddFamily = props => {
     fetch.post(PERTYPE_API).then(res => {
       if (get(res, 'state') === 10000) {
         // console.log('拿到的数据',res)
-        let arrdata = JSON.parse(JSON.stringify(res.data).replace(/desc/g, 'label'));
+        let arrdata = res.data || {};
+        arrdata = JSON.parse(JSON.stringify(arrdata).replace(/name/g, 'label'));
+        arrdata = JSON.parse(JSON.stringify(arrdata).replace(/key/g, 'value'));
         // console.log('修改后的数据',arrdata)
         setpersonType(arrdata);
       }

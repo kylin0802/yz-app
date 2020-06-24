@@ -33,7 +33,7 @@ function AddUser(props) {
 
   const getPersonType = () => {
     fetch.post(GET_PERSON_TYPE_API).then(res => {
-      const arr = res.data.map(item => ({ value: item.value, label: item.desc }));
+      const arr = res.data.map(item => ({ value: item.key, label: item.name }));
       setRoleStatus(arr);
     });
   };

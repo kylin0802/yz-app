@@ -67,7 +67,7 @@ const PlaceHolder = props => {
   };
 
   useEffect(() => {
-    // fetch.post(LOGIN_URL, { userName: "1555", password: "12345" }).then(res => {
+    // fetch.post(LOGIN_URL, { userName: "16", password: "111111" }).then(res => {
     //   console.log('res', res)
     // })
     let initUserer = null;

@@ -35,7 +35,7 @@ const CarInfo = props => {
   const getOwnerCar = initUser => {
     //获取本人的照片
     fetch.post(CARINFO_API, { personId: initUser.personId }).then(res => {
-      // console.log('本人的车辆信息', res.data.vehicle[0]);
+      console.log('本人的车辆信息', res.data.vehicle[0]);
       if (get(res, 'state') === 10000) {
         setOwnercar((res.data.vehicle && res.data.vehicle[0]) || {});
       }
@@ -48,8 +48,9 @@ const CarInfo = props => {
       // console.log('车辆类型',res.data)
       if (get(res, 'state') === 10000) {
         let arrdata = res.data || {};
-        arrdata = JSON.parse(JSON.stringify(arrdata).replace(/desc/g, 'label'));
-        // console.log('geugai', arrdata);
+        arrdata = JSON.parse(JSON.stringify(arrdata).replace(/name/g, 'label'));
+        arrdata = JSON.parse(JSON.stringify(arrdata).replace(/key/g, 'value'));
+        console.log('geugai', arrdata);
         setCartype(arrdata);
       }
     });

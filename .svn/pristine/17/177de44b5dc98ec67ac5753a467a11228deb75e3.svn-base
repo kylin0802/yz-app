@@ -1,9 +1,0 @@
-.width{
-    width:140px;
-  }
-  .textAlign{
-    text-align: center;
-  }
-  .marRight{
-    margin-right: 5px;
-  }
