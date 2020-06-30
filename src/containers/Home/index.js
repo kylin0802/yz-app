@@ -19,6 +19,14 @@ const PlaceHolder = props => {
   const [datar, setData] = useState([]);
 
   const handleLink = url => {
+    const apptitle = title;
+    console.log('apptitle', apptitle);
+    if (apptitle) {
+      document.title = apptitle;
+    } else {
+      document.title = '智慧家';
+    }
+
     try {
       window.jsInterface.jump(url);
     } catch (err) {
