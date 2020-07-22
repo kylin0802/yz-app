@@ -16,6 +16,7 @@ function Menu(props) {
   return (
     <section className={Styles.Wrapper} style={{ display: 'none' }}>
       {/* <section className={Styles.Wrapper}> */}
+      {/* <section className={Styles.Wrapper}> */}
       {routesConfig.map(menu => {
         return (
           <Link className={MenuItemStyles(menu)} to={`/${menu.key}`} key={menu.key}>

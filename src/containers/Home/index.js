@@ -8,24 +8,21 @@ import { getAppUrl } from '@/config/url.js';
 const OPEN_URL = getAppUrl() + '/yzSmartGate/app/openDoor';
 const PERINFO_URL = getAppUrl() + '/yzSmartGate/app/getPersonSelf';
 const GATE_URL = getAppUrl() + '/yzSmartGate/app/getFaceGateList';
-const LOGIN_URL = getAppUrl() + '/yzSmartGate/app/login';
+// const LOGIN_URL = getAppUrl() + '/yzSmartGate/app/login';
 
 const operation = Modal.operation;
 
 const PlaceHolder = props => {
-  const { title, url, icon, api } = props;
-  const [initUsers, setInitUsers] = useState([]);
-  const [Gate, setGate] = useState([]); //设备表
-  const [datar, setData] = useState([]);
-
+  const { title, url, icon, api, Gate } = props;
   const handleLink = url => {
     const apptitle = title;
-    console.log('apptitle', apptitle);
-    if (apptitle) {
-      document.title = apptitle;
-    } else {
-      document.title = '智慧家';
-    }
+    // console.log('apptitle', apptitle);
+    localStorage.setItem('apptitle', apptitle);
+    // if (apptitle) {
+    //   document.title = apptitle;
+    // } else {
+    //   document.title = '智慧家';
+    // }
 
     try {
       window.jsInterface.jump(url);
@@ -40,10 +37,14 @@ const PlaceHolder = props => {
     fetch
       .post(api, {
         deviceId: Gate[0].deviceId,
-        personId: datar.personId,
-        personName: initUsers.name,
-        houseId: initUsers.houseId,
-        areaId: initUsers.areaId
+        personId: localStorage.getItem('personID'),
+        // personId: datar.personId,
+        // personName: initUsers.name,
+        // houseId: initUsers.houseId,
+        // areaId: initUsers.areaId
+        personName: localStorage.getItem('houseId'),
+        houseId: localStorage.getItem('name'),
+        areaId: localStorage.getItem('areaId')
       })
       .then(res => {
         console.log('123', res);
@@ -53,13 +54,57 @@ const PlaceHolder = props => {
         // console.log(res);
       });
   };
+  return (
+    <div className="home-page-tag-item">
+      <span
+        className="home-page-tag-item-icon"
+        onClick={
+          title === '手机开门'
+            ? () =>
+                operation(
+                  Gate &&
+                    Gate.map((item, index) => {
+                      return { text: item.location, onPress: opendoor };
+                    })
+                )
+            : e => handleLink(url)
+        }>
+        {/* <Icon type="check" /> */}
+        <span className={icon}></span>
+      </span>
+      <span className="home-page-tag-item-title">{title}</span>
+    </div>
+  );
+};
+const Nav = props => {
+  const { Gate } = props;
+  return (
+    <div className="home-page-tag">
+      <PlaceHolder title="手机开门" {...props} icon="icon-door" api={OPEN_URL} Gate={Gate} />
+      <PlaceHolder title="绑定成员" {...props} icon="icon-open" url="/user/Binding" />
+      <PlaceHolder title="信息注册" {...props} icon="icon-loginout" url="/user/addUser" />
+      <PlaceHolder title="车辆信息" {...props} url="/user/CarInfo" icon="icon-car" />
+      <PlaceHolder title="添加成员" {...props} url="/user/AddFamily" icon="icon-user" />
+      <PlaceHolder title="记录查询" {...props} url="/user/record" icon="icon-search" />
+      <PlaceHolder title="更换住所" {...props} url="/user/CheckHome" icon="icon-search" />
+      <hr />
+      {/* 测试 ------- {userInfo} */}
+    </div>
+  );
+};
+function Home(props) {
+  const [initUsers, setInitUsers] = useState([]);
+  const [Gate, setGate] = useState([]); //设备表
+  // const [datar, setData] = useState([]);
   const getdata = initUserer => {
     //获取本人信息
     // console.log('qqq',initUserer.personId)
-    fetch.post(PERINFO_URL, { personId: initUserer.personId }).then(res => {
+    // fetch.post(PERINFO_URL, { personId: initUserer.personId }).then(res => {
+    fetch.post(PERINFO_URL, { personId: initUserer }).then(res => {
       // console.log('per',res.data)
       if (get(res, 'state') === 10000) {
         setInitUsers(res.data || {});
+        sessionStorage.setItem('type', res.data.personType);
         getGateList(res.data.areaId || {});
       }
     });
@@ -73,67 +118,21 @@ const PlaceHolder = props => {
       }
     });
   };
-
+  const ApptoLink = () => {
+    window.jsInterface.jump('/user/CheckHome');
+    // props.history.push('/CheckHome')
+  };
   useEffect(() => {
-    // fetch.post(LOGIN_URL, { userName: "16", password: "111111" }).then(res => {
-    //   console.log('res', res)
-    // })
-    let initUserer = null;
-    try {
-      window.jsInterface.getUserInfo();
-      console.log('123', window.jsInterface.getUserInfo());
-      initUserer = JSON.parse(window.jsInterface.getUserInfo());
-      console.log('安卓获取', initUserer);
-    } catch (err) {
-      initUserer = {
-        password: 'password003',
-        personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
-        userName: '1356669999',
-        status: 'localhost'
-      };
+    console.log('------------------', localStorage.getItem('personID'));
+    const per = localStorage.getItem('personID');
+    // setData(per)
+    if (per === null) {
+      // Toast.success('暂未获取到房源信息，请先选择住房');
+      ApptoLink();
     }
-    setData(initUserer);
-    getdata(initUserer);
+    getdata(per);
   }, []);
 
-  return (
-    <div className="home-page-tag-item">
-      <span
-        className="home-page-tag-item-icon"
-        onClick={
-          title === '手机开门'
-            ? () =>
-                operation(
-                  Gate &&
-                    Gate.map((item, index) => {
-                      return { text: item.location, onPress: opendoor };
-                      // { text: '二号门', onPress: () => console.log('置顶聊天被点击了') },
-                    })
-                )
-            : e => handleLink(url)
-        }>
-        {/* <Icon type="check" /> */}
-        <span className={icon}></span>
-      </span>
-      <span className="home-page-tag-item-title">{title}</span>
-    </div>
-  );
-};
-const Nav = props => {
-  return (
-    <div className="home-page-tag">
-      <PlaceHolder title="手机开门" {...props} icon="icon-door" api={OPEN_URL} />
-      <PlaceHolder title="绑定成员" {...props} icon="icon-open" url="/user/Binding" />
-      <PlaceHolder title="信息注册" {...props} icon="icon-loginout" url="/user/addUser" />
-      <PlaceHolder title="车辆信息" {...props} url="/user/CarInfo" icon="icon-car" />
-      <PlaceHolder title="添加成员" {...props} url="/user/AddFamily" icon="icon-user" />
-      <PlaceHolder title="记录查询" {...props} url="/user/record" icon="icon-search" />
-      <hr />
-      {/* 测试 ------- {userInfo} */}
-    </div>
-  );
-};
-function Home(props) {
   return (
     <React.Fragment>
       <div className="home-page-title">智慧家</div>
@@ -142,7 +141,7 @@ function Home(props) {
       </section>
       <section className="home-page-tag-wrapper">
         <h5 className="home-page-tag-title">通行统计</h5>
-        <Nav {...props} />
+        <Nav {...props} Gate={Gate} />
       </section>
       <section className="home-page-news">
         <span className="icon-voice"></span>名人苑智能家全面上线...

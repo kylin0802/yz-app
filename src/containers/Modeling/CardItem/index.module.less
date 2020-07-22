@@ -1,0 +1,85 @@
+
+@import '../../../styles/mixin.less';
+
+@baseSize: px2rem(12px);
+@midSize: px2rem(14px);
+@colB: #2D3640;
+@colC:  #323334;
+@colD: #98999A;
+
+.wrap{
+    padding: 0 px2rem(25px);
+    margin: px2rem(10px) 0;
+    background: #fff;
+    border:  1px solid #F5F5F5;
+}
+.title{
+    font-size: @midSize;
+    border-left: px2rem(3px) solid @colB ;
+    margin: px2rem(10px) 0;
+    padding-left: px2rem(10px);   
+}
+
+
+.image{
+    width: px2rem(44px);
+    height: px2rem(44px);
+    display: block;
+    margin-right: px2rem(22px);
+}
+.modImg{
+    display: flex;
+    // pading: px2rem(10px) 0;
+    padding-bottom: px2rem(10px);
+    border-bottom: 1px solid #F5F5F5;
+
+}
+.imageInfo{
+    display: flex;
+    justify-content: space-between;
+   
+   
+    align-items: center;
+    width: 100%;
+}
+.imageName{
+    font-size: @midSize;
+}
+.label{
+    line-height: px2rem(20px);
+}
+.modContent{
+    padding:px2rem(10px) 0 ;
+    border:  1px solid #F5F5F5;
+
+}
+
+.labelSpan{
+    font-size: @baseSize;
+    width: px2rem(50px);
+    display: inline-block;
+    color:@colC;
+    margin-right: px2rem(20px);
+    
+}
+.labelItem{
+    font-size: @baseSize;
+    color: @colD;
+}
+.modFooter{
+
+    text-align: center;
+    line-height: px2rem(35px);
+}
+.btn{
+    width: px2rem(100px);
+    color: #017CFF;
+    font-size: @midSize;
+}
+.btnIcon{
+    width: px2rem(14px);
+    height: px2rem(14px);
+    margin-right: px2rem(5px);
+}
+
+

@@ -12,30 +12,31 @@ const GETCARtYPE_API = getAppUrl() + '/yzSmartGate/app/getVehicleTypeList'; //�
 const DELETE_API = getAppUrl() + '/yzSmartGate/app/delVehicle';
 
 const CarInfo = props => {
-  const A = 'data:image/jpeg;base64,';
+  // const A = 'data:image/jpeg;base64,';
   const [owerCar, setOwnercar] = useState('');
   const [cartype, setCartype] = useState([]); //车辆类型
   const { validateFields, getFieldProps, resetFields } = props.form;
-  const [photo, setPhoto] = useState('');
+  // const [photo, setPhoto] = useState('');
   const [initUser, setInitUser] = useState({}); //默认值
 
-  const onChangeImg = f => {
-    try {
-      console.log('调取摄像头');
+  // const onChangeImg = f => {
+  //   try {
+  //     console.log('调取摄像头');
 
-      window.takePhoto.openCamera(); // 前端调取摄像头
-      // console.log(window.takePhoto.takeFromJs())
-    } catch (err) {
-      console.log('调用摄像头错误', f);
-    }
-    // setFiles(f)
-    // console.log(files, type, index);
-    // setFiles(files);
-  };
+  //     window.takePhoto.openCamera(); // 前端调取摄像头
+  //     // console.log(window.takePhoto.takeFromJs())
+  //   } catch (err) {
+  //     console.log('调用摄像头错误', f);
+  //   }
+  //   // setFiles(f)
+  //   // console.log(files, type, index);
+  //   // setFiles(files);
+  // };
   const getOwnerCar = initUser => {
     //获取本人的照片
-    fetch.post(CARINFO_API, { personId: initUser.personId }).then(res => {
-      console.log('本人的车辆信息', res.data.vehicle[0]);
+    // fetch.post(CARINFO_API, { personId: initUser.personId }).then(res => {
+    fetch.post(CARINFO_API, { personId: initUser }).then(res => {
+      // console.log('本人的车辆信息', res.data.vehicle[0]);
       if (get(res, 'state') === 10000) {
         setOwnercar((res.data.vehicle && res.data.vehicle[0]) || {});
       }
@@ -57,54 +58,62 @@ const CarInfo = props => {
   };
 
   useEffect(() => {
-    let initUser = null;
-    try {
-      console.log('现在已经绑定 appTakePhoto');
-      window.appTakePhoto = appTakePhoto; // 全局钩子，作用： 促使安卓调用
-      initUser = JSON.parse(window.jsInterface.getUserInfo());
-      console.log('安卓获取', initUser);
-      console.log('perid', initUser.personId);
-    } catch (err) {
-      console.log('绑定报错');
-      initUser = {
-        password: 'password003',
-        personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
-        userName: '1356669999',
-        status: 'localhost'
-      };
-    }
-    setInitUser(initUser);
-    getCarType(); //获取车辆的类型
-    getOwnerCar(initUser); //获取本人的信息
+    document.title = localStorage.getItem('apptitle');
+    // let initUser = null;
+    // try {
+    //   console.log('现在已经绑定 appTakePhoto');
+    //   window.appTakePhoto = appTakePhoto; // 全局钩子，作用： 促使安卓调用
+    // //   initUser = JSON.parse(window.jsInterface.getUserInfo());
+    // //   console.log('安卓获取', initUser);
+    // //   console.log('perid', initUser.personId);
+    // } catch (err) {
+    //   console.log('绑定报错');
+    // //   initUser = {
+    // //     password: 'password003',
+    // //     personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
+    // //     userName: '1356669999',
+    // //     status: 'localhost'
+    //   };
+    // }
+    console.log('------------------', localStorage.getItem('personID'));
+    const per = localStorage.getItem('personID');
+    getCarType();
+    // setInitUser(initUser);
+    //  //获取车辆的类型
+    // getOwnerCar(initUser); //获取本人的信息
+    setInitUser(per);
+    //获取车辆的类型
+    getOwnerCar(per); //获取本人的信息
   }, []);
-  const appTakePhoto = res => {
-    // 安卓调用前端方法，传base64
-    // console.log(111)
-    try {
-      console.log(typeof res);
-      console.log(res);
-      console.log('照片路径傻逼', JSON.parse(res).base64);
-      setPhoto(JSON.parse(res).base64);
-    } catch (err) {
-      console.log('照片上传报错');
-      setPhoto('111');
-    }
-  };
+  // const appTakePhoto = res => {
+  //   // 安卓调用前端方法，传base64
+  //   // console.log(111)
+  //   try {
+  //     console.log(typeof res);
+  //     console.log(res);
+  //     console.log('照片路径傻逼', JSON.parse(res).base64);
+  //     setPhoto(JSON.parse(res).base64);
+  //   } catch (err) {
+  //     console.log('照片上传报错');
+  //     setPhoto('111');
+  //   }
+  // };
 
   const onSubmite = () => {
     //添加车辆
-    console.log('拿到的地址', photo);
+    // console.log('拿到的地址', photo);
     validateFields((err, values) => {
       let param = {
-        personId: initUser.personId,
+        // personId: initUser.personId,
+        personId: initUser,
         vehicle: {
           plateNumber: values.plateNumber,
           brand: values.brand,
           model: values.model,
           color: values.color,
           type: values.type[0],
-          owner: values.owner,
-          vehiclePhoto: photo
+          owner: values.owner
+          // vehiclePhoto: photo
         }
       };
       console.log('param', param);
@@ -123,7 +132,8 @@ const CarInfo = props => {
     //删除设备
     validateFields((err, values) => {
       let param = {
-        personId: initUser.personId,
+        // personId: initUser.personId,
+        personId: initUser,
         vehicle: {
           plateNumber: values.plateNumber
         }
@@ -134,7 +144,7 @@ const CarInfo = props => {
         if (get(res, 'state') === 10000) {
           Toast.success(res.message);
           resetFields();
-          setPhoto('');
+          // setPhoto('');
           getOwnerCar(initUser); //获取本人的信息
         }
       });
@@ -191,34 +201,32 @@ const CarInfo = props => {
           </InputItem>
         </List>
       </section>
-      <section className="user-page-upload">
-        <Flex justify="between" className="user-page-upload-title">
+      {/* <section className="user-page-upload"> */}
+      {/* <Flex justify="between" className="user-page-upload-title">
           <span className="inline"> 上传照片</span>
           <span className="inline" onClick={onChangeImg}>
             选择图片
           </span>
-        </Flex>
-        <div className="user-page-upload-content">
-          {/* <img src={photo} /> */}
+        </Flex> */}
+      {/* <div className="user-page-upload-content">
           <div className="user-page-image">
             {!!photo || !!owerCar.vehiclePhoto ? (
-              // <img src={A+photo && A+owerCar.vehiclePhoto} alt="照片" onClick={onChangeImg} />
               <img src={!!photo ? A + photo : A + owerCar.vehiclePhoto} alt="照片" onClick={onChangeImg} />
             ) : (
               <Icon type="plus" onClick={onChangeImg} />
             )}
           </div>
-        </div>
-        <WingBlank>
-          <Button type="primary" style={{ marginTop: '75px' }} onClick={onSubmite}>
-            保存
-          </Button>
-          <Button type="danger" style={{ marginTop: '5px' }} onClick={onDelete}>
-            删除
-          </Button>
-        </WingBlank>
-      </section>
+        </div> */}
+      <WingBlank>
+        <Button type="primary" style={{ marginTop: '75px' }} onClick={onSubmite}>
+          保存
+        </Button>
+        <Button type="danger" style={{ marginTop: '5px' }} onClick={onDelete}>
+          删除
+        </Button>
+      </WingBlank>
     </section>
+    // </section>
   );
 };
 export default createForm()(CarInfo);

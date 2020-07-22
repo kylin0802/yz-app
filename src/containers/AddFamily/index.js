@@ -21,7 +21,8 @@ const AddFamily = props => {
       if (!error) {
         console.log('dasd', props.form.getFieldsValue());
         const formData = props.form.getFieldsValue();
-        let val = { ...formData, facePhoto: photo, personId: initUser.personId };
+        // let val = { ...formData, facePhoto: photo, personId: initUser.personId };
+        let val = { ...formData, facePhoto: photo, personId: initUser };
         val.personType = formData.personType ? formData.personType[0] : '';
         // console.log('chashu', val);
         fetch.post(ADDPERSON_API, val).then(res => {
@@ -81,21 +82,26 @@ const AddFamily = props => {
   };
 
   useEffect(() => {
-    let initUser = null;
+    document.title = localStorage.getItem('apptitle');
+    // let initUser = null;
     try {
       console.log('现在已经绑定 appTakePhoto');
       window.appTakePhoto = appTakePhoto; // 全局钩子，作用： 促使安卓调用
-      initUser = JSON.parse(window.jsInterface.getUserInfo());
-      console.log('安卓获取', initUser);
+      // initUser = JSON.parse(window.jsInterface.getUserInfo());
+      // console.log('安卓获取', initUser);
     } catch (err) {
-      initUser = {
-        password: 'password003',
-        personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
-        userName: '1356669999',
-        status: 'localhost'
-      };
+      // initUser = {
+      //   password: 'password003',
+      //   personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
+      //   userName: '1356669999',
+      //   status: 'localhost'
+      // };
+      console.log(err);
     }
-    setInitUser(initUser);
+    // setInitUser(initUser);
+    console.log('------------------', localStorage.getItem('personID'));
+    const per = localStorage.getItem('personID');
+    setInitUser(per);
     getPersonType();
   }, []);
 

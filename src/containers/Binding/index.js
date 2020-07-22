@@ -19,7 +19,8 @@ const Binding = props => {
       if (!error) {
         console.log('dasd', props.form.getFieldsValue());
         const formData = props.form.getFieldsValue();
-        let val = { ...formData, ownerId: initUser.personId };
+        // let val = { ...formData, ownerId: initUser.personId };
+        let val = { ...formData, ownerId: initUser };
         val.personType = formData.personType[0];
         console.log('chashu', val);
         fetch.post(ADDPERSON_API, val).then(res => {
@@ -52,21 +53,25 @@ const Binding = props => {
   };
 
   useEffect(() => {
-    let initUser = null;
-    try {
-      //   console.log('现在已经绑定 appTakePhoto');
-      //   window.appTakePhoto = appTakePhoto; // 全局钩子，作用： 促使安卓调用
-      initUser = JSON.parse(window.jsInterface.getUserInfo());
-      console.log('安卓获取', initUser);
-    } catch (err) {
-      initUser = {
-        password: 'password003',
-        personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
-        userName: '1356669999',
-        status: 'localhost'
-      };
-    }
-    setInitUser(initUser);
+    document.title = localStorage.getItem('apptitle');
+    // let initUser = null;
+    // try {
+    //   //   console.log('现在已经绑定 appTakePhoto');
+    //   //   window.appTakePhoto = appTakePhoto; // 全局钩子，作用： 促使安卓调用
+    //   initUser = JSON.parse(window.jsInterface.getUserInfo());
+    //   console.log('安卓获取', initUser);
+    // } catch (err) {
+    //   initUser = {
+    //     password: 'password003',
+    //     personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
+    //     userName: '1356669999',
+    //     status: 'localhost'
+    //   };
+    // }
+    console.log('------------------', localStorage.getItem('personID'));
+    const per = localStorage.getItem('personID');
+    // setInitUser(initUser);
+    setInitUser(per);
     getPersonType();
   }, []);
 

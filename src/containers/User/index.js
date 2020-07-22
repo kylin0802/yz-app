@@ -22,6 +22,9 @@ function User(props) {
     }
   };
   // }
+  const localrelaod = () => {
+    window.location.reload();
+  };
   const loginout = () => {
     console.log('退出', 123);
     try {
@@ -31,8 +34,8 @@ function User(props) {
     }
   };
   const getPerInfo = initUser => {
-    fetch.post(GET_PERSON_INFO, { personId: initUser.personId }).then(res => {
-      // console.log('本人信息',res.data)
+    fetch.post(GET_PERSON_INFO, { personId: initUser }).then(res => {
+      console.log('本人信息', res.data);
       if (get(res, 'state') === 10000) {
         setPerInfo(res.data || {});
       }
@@ -44,21 +47,28 @@ function User(props) {
       setComUrl(res.message);
     });
   };
+
   useEffect(() => {
-    let initUser = null;
-    try {
-      initUser = JSON.parse(window.jsInterface.getUserInfo());
-      console.log('安卓获取', initUser);
-    } catch (err) {
-      initUser = {
-        password: '',
-        personId: '',
-        userName: '',
-        status: ''
-      };
-    }
-    setInitUser(initUser);
-    getPerInfo(initUser);
+    // window.location.reload()
+    // window.opener.location.href=window.opener.location.href
+    // let initUser = null;
+    // try {
+    //   initUser = JSON.parse(window.jsInterface.getUserInfo());
+    //   console.log('安卓获取', initUser);
+    // } catch (err) {
+    //   initUser = {
+    //     password: '',
+    //     personId: '',
+    //     userName: '',
+    //     status: ''
+    //   };
+    // }
+    // setInitUser(initUser);
+    // getPerInfo(initUser);
+    console.log('------------------', localStorage.getItem('personID'));
+    const per = localStorage.getItem('personID');
+    setInitUser(per);
+    getPerInfo(per);
     getComUrl();
   }, []);
   return (
@@ -68,7 +78,7 @@ function User(props) {
         <div className="user-page-header-title">
           <div className="user-page-header-title-text">欢迎您-{perInfo.name}</div>
           <div className="user-page-header-title-img">
-            <img src={comUrl + perInfo.facePhotoPath} alt="头像" style={{ objectFit: 'cover' }} />
+            <img src={comUrl + perInfo.facePhotoPath} alt="头像" style={{ objectFit: 'cover' }} onClick={localrelaod} />
           </div>
         </div>
       </div>
@@ -87,7 +97,12 @@ function User(props) {
           </Item>
         </List>
         <List className="my-list">
-          <Item arrow="horizontal" multipleLine onClick={() => {}}>
+          <Item
+            arrow="horizontal"
+            multipleLine
+            onClick={() => {
+              handleLink('/user/Modeling');
+            }}>
             建模信息
           </Item>
         </List>

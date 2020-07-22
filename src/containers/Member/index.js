@@ -14,7 +14,8 @@ function Member() {
   const getList = res => {
     fetch
       .post(GET_MEMBER_LIST_API, {
-        personId: initUser.personId
+        // personId: initUser.personId
+        personId: localStorage.getItem('personID')
       })
       .then(res => {
         const data = !!res.data ? res.data : [];
@@ -35,6 +36,7 @@ function Member() {
     getList();
   };
   useEffect(() => {
+    document.title = '绑定账号设置';
     getList();
     getPersonType();
   }, []);

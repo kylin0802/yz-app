@@ -14,10 +14,11 @@ function CardItem(props) {
   const handleDel = res => {
     console.log(res);
     const { personId, houseId } = user;
+    const ownerId = localStorage.getItem('personID');
     fetch
       .post(API, {
         personId,
-        houseId
+        ownerId
       })
       .then(res => {
         if (res.state === -1) {

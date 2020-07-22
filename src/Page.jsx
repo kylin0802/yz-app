@@ -8,6 +8,8 @@ import AddFamily from './containers/AddFamily';
 import Record from './containers/Record';
 import Member from './containers/Member';
 import Binding from './containers/Binding';
+import CheckHome from './containers/CheckHome';
+import Modeling from './containers/Modeling';
 
 // import NoFind from './containers/NoFind';
 
@@ -22,6 +24,8 @@ export default props => {
         <Route exact path="/user/addFamily" component={AddFamily} />
         <Route exact path="/user/member" component={Member} />
         <Route exact path="/user/binding" component={Binding} />
+        <Route exact path="/user/CheckHome" component={CheckHome} />
+        <Route exact path="/user/Modeling" component={Modeling} />
         <Route path="/" component={App} />
         <Redirect to="/404" />
       </Switch>

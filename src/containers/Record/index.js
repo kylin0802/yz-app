@@ -58,9 +58,11 @@ function Record() {
   const [beginTime, setBeginTime] = useState(OneDay);
   const [list, setList] = useState([]);
   useEffect(() => {
+    document.title = localStorage.getItem('apptitle');
     fetch
       .post(GET_LIST_API, {
-        personId: initUser.personId,
+        // personId: initUser.personId,
+        personId: localStorage.getItem('personID'),
         beginTime,
         endTime: currentDay, //当前时间
         pageNumber: 1,

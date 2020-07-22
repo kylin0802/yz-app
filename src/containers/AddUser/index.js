@@ -39,25 +39,31 @@ function AddUser(props) {
   };
 
   useEffect(() => {
-    let initUser = null;
+    document.title = localStorage.getItem('apptitle');
+    // let initUser = null;
     try {
       console.log('现在已经绑定 appTakePhoto');
       window.appTakePhoto = appTakePhoto; // 全局钩子，作用： 促使安卓调用
-      initUser = JSON.parse(window.jsInterface.getUserInfo());
-      console.log('安卓获取', initUser);
+      // initUser = JSON.parse(window.jsInterface.getUserInfo());
+      // console.log('安卓获取', initUser);
     } catch (err) {
-      initUser = {
-        password: 'password003',
-        personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
-        userName: '1356669999',
-        status: 'localhost'
-      };
+      // initUser = {
+      //   password: 'password003',
+      //   personId: 'Pa5ec091ab78e4c22a46a28eeea891851',
+      //   userName: '1356669999',
+      //   status: 'localhost'
+      // };
     }
-    setInitUser(initUser);
+
+    // setInitUser(initUser);
+    console.log('------------------', localStorage.getItem('personID'));
+    const per = localStorage.getItem('personID');
+    setInitUser(per);
     getPersonType();
     fetch
       .post(GET_USER_INFO_API, {
-        personId: initUser.personId
+        // personId: initUser.personId
+        personId: per
       })
       .then(res => {
         // console.log(res);
@@ -90,7 +96,8 @@ function AddUser(props) {
           ...formData,
           areaId: user.areaId || '',
           houseId: user.houseId || '',
-          personId: initUser.personId,
+          // personId: initUser.personId,
+          personId: initUser,
           facePhoto: photo,
           personType: formData.personArr[0]
         };

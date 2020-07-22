@@ -1,7 +1,17 @@
 import { asyncImport } from './routerLoadable';
-import '../styles/iconfont/iconfont.css'
+import '../styles/iconfont/iconfont.css';
 
 const routesConfig = [
+  // {
+  //   name: '选房',
+  //   path: '/app',
+  //   key: 'app',
+  //   component: asyncImport(() => import('../containers/CheckHome')),
+  //   meta: {
+  //     title: '选房'
+  //   },
+  //   icon: 'anticon-kaoshi'
+  // },
   {
     name: '首页',
     path: '/app',
@@ -31,7 +41,7 @@ const routesConfig = [
       title: '我的'
     },
     icon: 'anticon-kaoshengguanli'
-  }, 
+  }
 ];
 
 export default routesConfig;
