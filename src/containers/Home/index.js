@@ -120,7 +120,7 @@ function Home(props) {
   };
   const ApptoLink = () => {
     window.jsInterface.jump('/user/CheckHome');
-    // props.history.push('/CheckHome')
+    // props.history.push('/user/CheckHome')
   };
   useEffect(() => {
     console.log('------------------', localStorage.getItem('personID'));

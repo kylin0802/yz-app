@@ -120,11 +120,15 @@ function AddUser(props) {
 
       <section className="user-page-form">
         <List>
-          <InputItem {...getFieldProps('name', { initialValue: user.name || '' })} placeholder="姓名">
+          <InputItem {...getFieldProps('name', { initialValue: user.name || '' })} placeholder="姓名" disabled>
             姓名
           </InputItem>
-          <InputItem {...getFieldProps('identity', { initialValue: user.identity || '' })} clear placeholder="省份证号">
-            省份证号
+          <InputItem
+            {...getFieldProps('identity', { initialValue: user.identity || '' })}
+            clear
+            placeholder="身份证号"
+            disabled>
+            身份证号
           </InputItem>
           <List.Item>
             <Picker
@@ -132,7 +136,8 @@ function AddUser(props) {
                 initialValue: [user.personType || '']
               })}
               data={roleStatus}
-              cols={1}>
+              cols={1}
+              disabled>
               <List.Item arrow="horizontal">类型</List.Item>
             </Picker>
           </List.Item>

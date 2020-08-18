@@ -41,7 +41,7 @@ const CheckHome = props => {
   //   })
 
   const getPersonHouse = initUserer => {
-    console.log('resss', initUserer.userId);
+    // console.log('resss', initUserer.userId);
     fetch.post(PERSON_HOME, { userId: initUserer.userId }).then(res => {
       console.log('res', res.data);
       setPersonHome(res.data);
