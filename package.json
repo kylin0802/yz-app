@@ -69,7 +69,7 @@
     "moment": "^2.24.0",
     "mutation-observer": "^1.0.3",
     "optimize-css-assets-webpack-plugin": "5.0.1",
-    "plupload": "^2.3.6",
+    "plupload": "^2.3.9",
     "pnp-webpack-plugin": "1.2.1",
     "postcss-flexbugs-fixes": "4.1.0",
     "postcss-loader": "3.0.0",
